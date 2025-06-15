@@ -12,8 +12,8 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    template: "%s - AI Resume Builder",
-    absolute: "AI Resume Builder",
+    template: "%s - ProFileBuilder",
+    absolute: "ProFileBuilder",
   },
   description: "Generate smart resumes with AI assistance",
 };
