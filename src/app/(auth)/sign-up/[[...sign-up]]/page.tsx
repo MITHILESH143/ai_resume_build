@@ -10,7 +10,7 @@ const Page = () => {
           baseTheme: dark,
           elements: {
             formButtonPrimary:
-              "bg-purple-600 hover:bg-purple-700 text-white font-medium",
+              "bg-purple-600 hover:bg-purple-700 text-white font-medium ",
             socialButtonsBlockButton:
               "bg-purple-600 hover:bg-purple-700 text-white",
           },
