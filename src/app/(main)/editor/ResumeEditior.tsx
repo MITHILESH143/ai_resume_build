@@ -2,11 +2,11 @@
 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import GeneralInfoFrom from "./forms/GeneralInfoFrom";
+import PersonalnfoForm from "./forms/PersonalnfoForm";
 
 const ResumeEditior = () => {
   return (
-    <div className="flex grow flex-col h-[91vh]">
+    <div className="flex h-[91vh] grow flex-col">
       <header className="space-y-1.5 border-b px-3 py-5 text-center">
         <h1 className="text-2xl font-bold">Design Your Resume</h1>
         <p className="text-muted-foreground text-sm">
@@ -16,9 +16,9 @@ const ResumeEditior = () => {
       </header>
 
       <main className="grow">
-        <div className="flex w-full h-full">
-          <div className="w-full p-3 md:w-1/2">
-            <GeneralInfoFrom />
+        <div className="flex h-full w-full">
+          <div className="w-full overflow-y-auto p-3 md:w-1/2">
+            <PersonalnfoForm />
           </div>
           <div className="grow md:border-r" />
           <div className="hidden w-1/2 md:flex">Right</div>
