@@ -9,11 +9,10 @@ export const generalInfoSchema = z.object({
 
 export type GeneralInfoValue = z.infer<typeof generalInfoSchema>;
 
-
 //structure for personal info form
 export const personalInfoSchema = z.object({
-  photo: z
-    .custom<File | undefined>()
+  photo: 
+  z.custom<File | undefined>()
     .refine(
       (file) =>
         !file || (file instanceof File && file.type.startsWith("image/")),
@@ -32,5 +31,4 @@ export const personalInfoSchema = z.object({
   email: optionalString,
 });
 
-
-export type PersonalInfoSchema = z.infer<typeof personalInfoSchema>
+export type PersonalInfoSchema = z.infer<typeof personalInfoSchema>;
