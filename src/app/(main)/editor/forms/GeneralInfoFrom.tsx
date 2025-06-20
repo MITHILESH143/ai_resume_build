@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -39,6 +40,26 @@ const GeneralInfoFrom = () => {
                 <FormControl>
                   <Input {...field} placeholder="My cool resume" autoFocus />
                 </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Description</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    placeholder="A resume for my next job"
+                    autoFocus
+                  />
+                </FormControl>
+                <FormDescription>
+                  Describe what this resume is for.
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}

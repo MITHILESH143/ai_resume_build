@@ -14,8 +14,9 @@ const ResumeEditior = () => {
           saved automatically
         </p>
       </header>
+
       <main className="relative grow">
-        <div className="absolute top-0 bottom-0 flex w-full">
+        <div className="glex w-full">
           <div className="w-full p-3 md:w-1/2">
             <GeneralInfoFrom />
           </div>
@@ -24,7 +25,7 @@ const ResumeEditior = () => {
         </div>
       </main>
 
-      <footer className="px3 w-full border-t py-5">
+      <footer className="w-full border-t px-3 py-5">
         <div className="mx-auto flex max-w-7xl flex-wrap justify-between gap-3">
           <div className="flex items-center gap-3">
             <Button variant="secondary">Prevous Step</Button>
