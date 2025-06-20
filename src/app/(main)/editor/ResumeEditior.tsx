@@ -6,7 +6,7 @@ import GeneralInfoFrom from "./forms/GeneralInfoFrom";
 
 const ResumeEditior = () => {
   return (
-    <div className="flex grow flex-col">
+    <div className="flex grow flex-col h-[91vh]">
       <header className="space-y-1.5 border-b px-3 py-5 text-center">
         <h1 className="text-2xl font-bold">Design Your Resume</h1>
         <p className="text-muted-foreground text-sm">
@@ -15,8 +15,8 @@ const ResumeEditior = () => {
         </p>
       </header>
 
-      <main className="relative grow">
-        <div className="glex w-full">
+      <main className="grow">
+        <div className="flex w-full h-full">
           <div className="w-full p-3 md:w-1/2">
             <GeneralInfoFrom />
           </div>
