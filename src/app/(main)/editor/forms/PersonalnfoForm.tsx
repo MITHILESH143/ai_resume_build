@@ -4,11 +4,12 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { personalInfoSchema, PersonalInfoSchema } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 const PersonalnfoForm = () => {
@@ -24,6 +25,16 @@ const PersonalnfoForm = () => {
       email: "",
     },
   });
+
+  useEffect(() => {
+    const { unsubscribe } = form.watch(async () => {
+      const isValid = await form.trigger();
+      if (!isValid) return;
+      //update the resume data
+    });
+
+    return unsubscribe;
+  }, [form]);
 
   return (
     <div className="mx-auto max-w-xl space-y-6">
@@ -43,13 +54,15 @@ const PersonalnfoForm = () => {
                   <Input
                     {...fieldValues}
                     type="file"
-                    accept="image/*"
+                    // accept="image/*"
+                    value={undefined}
                     onChange={(e) => {
                       const file = e.target.files?.[0];
                       fieldValues.onChange(file);
                     }}
                   />
                 </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           />
