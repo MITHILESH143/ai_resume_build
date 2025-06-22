@@ -27,10 +27,12 @@ const PersonalnfoForm = () => {
   });
 
   useEffect(() => {
-    const { unsubscribe } = form.watch(async () => {
-      const isValid = await form.trigger();
-      if (!isValid) return;
-      //update the resume data
+    const { unsubscribe } = form.watch(async (data, { name, type }) => {
+      if (type === 'change' && name) {
+        const isValid = await form.trigger();
+        if (!isValid) return;
+        //update the resume data
+      }
     });
 
     return unsubscribe;
@@ -42,23 +44,32 @@ const PersonalnfoForm = () => {
         <h2 className="text-2xl font-semibold">Personal Info</h2>
         <p className="text-muted-foreground text-sm">Tell us about yourself</p>
       </div>
+      
       <Form {...form}>
         <form className="space-y-3">
           <FormField
             control={form.control}
             name="photo"
-            render={({ field: { value, ...fieldValues } }) => (
+            render={({ field: { value, onChange, ...rest } }) => (
               <FormItem>
                 <FormLabel>Your photo</FormLabel>
                 <FormControl>
                   <Input
-                    {...fieldValues}
                     type="file"
-                    // accept="image/*"
+                    accept="image/*"
+                    name={rest.name}
+                    onBlur={rest.onBlur}
+                    ref={rest.ref}
                     value={undefined}
-                    onChange={(e) => {
+                    onChange={async (e) => {
                       const file = e.target.files?.[0];
-                      fieldValues.onChange(file);
+                      onChange(file);
+                      
+                      if (file) {
+                        setTimeout(async () => {
+                          await form.trigger("photo");
+                        }, 0);
+                      }
                     }}
                   />
                 </FormControl>
