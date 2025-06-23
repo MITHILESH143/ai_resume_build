@@ -1,5 +1,4 @@
 "use client";
-
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -19,8 +18,9 @@ const ResumeEditior = () => {
   const FormComponent = steps.find(
     (step) => step.key === currentStep,
   )?.component;
+
   return (
-    <div className="flex grow flex-col">
+    <div className="flex min-h-full flex-col">
       <header className="space-y-1.5 border-b px-3 py-5 text-center">
         <h1 className="text-2xl font-bold">Design Your Resume</h1>
         <p className="text-muted-foreground text-sm">
@@ -29,21 +29,22 @@ const ResumeEditior = () => {
         </p>
       </header>
 
-      <main className="grow">
-        <div className="flex min-h-[490px] w-full">
+      <main className="flex min-h-[490px] pb-5 flex-1">
+        <div className="flex w-full">
           <div className="w-full overflow-y-auto p-3 md:w-1/2 space-y-3">
             <BreadCrumbs currentStep={currentStep} setCurrentStep={setStep} />
             {FormComponent && <FormComponent />}
           </div>
-          <div className="grow md:border-r" />
-          <div className="hidden w-1/2 md:flex">Right</div>
+          <div className="hidden md:block md:w-1/2 md:border-l">
+            <div className="p-3">Right</div>
+          </div>
         </div>
       </main>
 
-      <footer className="w-full border-t px-3 py-5">
+      <footer className="w-full border-t px-3 py-5 min-h-[50px]">
         <div className="mx-auto flex max-w-7xl flex-wrap justify-between gap-3">
           <div className="flex items-center gap-3">
-            <Button variant="secondary">Prevous Step</Button>
+            <Button variant="secondary">Previous Step</Button>
             <Button>Next Step</Button>
           </div>
           <div className="flex items-start gap-3">
@@ -57,4 +58,5 @@ const ResumeEditior = () => {
     </div>
   );
 };
+
 export default ResumeEditior;
