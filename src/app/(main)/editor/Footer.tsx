@@ -3,12 +3,12 @@ import Link from "next/link";
 import React from "react";
 import { steps } from "./steps";
 
-interface FooterProps {
+interface FooterProp {
   currentStep: string;
   setCurrentSteps: (step: string) => void;
 }
 
-const Footer = ({ currentStep, setCurrentSteps }: FooterProps) => {
+const Footer = ({ currentStep, setCurrentSteps }: FooterProp) => {
   const previousStep = steps.find(
     (_, index) => steps[index + 1]?.key === currentStep,
   )?.key;
