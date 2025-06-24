@@ -19,7 +19,7 @@ const BreadCrumbs: React.FC<BreadCrumbProps> = ({
   setCurrentStep,
 }) => {
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center my-2">
       <Breadcrumb>
         <BreadcrumbList>
           {steps.map((step) => (
