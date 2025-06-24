@@ -1,9 +1,8 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { steps } from "./steps";
 import BreadCrumbs from "./BreadCrumbs";
+import Footer from "./Footer";
 
 const ResumeEditior = () => {
   const searchParams = useSearchParams();
@@ -29,32 +28,17 @@ const ResumeEditior = () => {
         </p>
       </header>
 
-      <main className="flex min-h-[490px] pb-5 flex-1">
+      <main className="flex min-h-[490px] flex-1">
         <div className="flex w-full">
-          <div className="w-full overflow-y-auto p-3 md:w-1/2 space-y-3">
+          <div className="w-full space-y-3 overflow-y-auto pb-10 md:w-1/2">
             <BreadCrumbs currentStep={currentStep} setCurrentStep={setStep} />
             {FormComponent && <FormComponent />}
           </div>
-          <div className="hidden md:block md:w-1/2 md:border-l">
-            <div className="p-3">Right</div>
-          </div>
+          <div className="grow md:border-r" />
+          <div className="hidden w-1/2 md:flex">RIght</div>
         </div>
       </main>
-
-      <footer className="w-full border-t px-3 py-5 min-h-[50px]">
-        <div className="mx-auto flex max-w-7xl flex-wrap justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <Button variant="secondary">Previous Step</Button>
-            <Button>Next Step</Button>
-          </div>
-          <div className="flex items-start gap-3">
-            <Button variant="secondary" asChild>
-              <Link href="/resumes"> Close</Link>
-            </Button>
-            <p className="text-muted-foreground opacity-0">Saving...</p>
-          </div>
-        </div>
-      </footer>
+      <Footer currentStep={currentStep} setCurrentSteps={setStep} />
     </div>
   );
 };
