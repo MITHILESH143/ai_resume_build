@@ -48,7 +48,7 @@ const PersonalnfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
       </div>
 
       <Form {...form}>
-        <form className="space-y-3">
+        <div className="space-y-3">
           <FormField
             control={form.control}
             name="photo"
@@ -174,7 +174,7 @@ const PersonalnfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
               </FormItem>
             )}
           />
-        </form>
+        </div>
       </Form>
     </div>
   );
