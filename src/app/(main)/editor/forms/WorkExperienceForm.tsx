@@ -1,12 +1,28 @@
 import { Button } from "@/components/ui/button";
+import {
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { EditorFormProps } from "@/lib/types";
-import { workExperienceSchema, WorkExperienceSchema } from "@/lib/validation";
+import { workExperienceSchema, WorkExperienceValues } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect } from "react";
-import { Form, useFieldArray, useForm } from "react-hook-form";
+import {
+  Form,
+  FormProvider,
+  useFieldArray,
+  useForm,
+  UseFormReturn,
+} from "react-hook-form";
 
 const WorkExperienceForm = ({ resumeData, setResumeData }: EditorFormProps) => {
-  const form = useForm<WorkExperienceSchema>({
+  const form = useForm<WorkExperienceValues>({
     resolver: zodResolver(workExperienceSchema),
     defaultValues: {
       workExperiences: resumeData.workExperiences || [],
@@ -24,14 +40,14 @@ const WorkExperienceForm = ({ resumeData, setResumeData }: EditorFormProps) => {
           workExperiences:
             data.workExperiences?.filter((exp) => exp !== undefined) || [],
         });
+        console.log(data.workExperiences);
       }
     });
 
     return unsubscribe;
   }, [form, resumeData, setResumeData]);
 
-
-  const { fields, append } = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     control: form.control,
     name: "workExperiences",
   });
@@ -45,28 +61,35 @@ const WorkExperienceForm = ({ resumeData, setResumeData }: EditorFormProps) => {
         </p>
       </div>
       <Form {...form}>
-        <div className="space-y-3">
-          {fields.map((field) => (
-            <WorkExperienceItem key={field.id} />
-          ))}
+        <FormProvider {...form}>
+          <div className="space-y-3">
+            {fields.map((field, index) => (
+              <WorkExperienceItem
+                key={field.id}
+                index={index}
+                form={form}
+                remove={remove}
+              />
+            ))}
 
-          <div className="flex justify-center">
-            <Button
-              type="button"
-              onClick={() => {
-                append({
-                  position: "",
-                  company: "",
-                  startDate: "",
-                  endDate: "",
-                  description: "",
-                });
-              }}
-            >
-              Add Work Experience
-            </Button>
+            <div className="flex justify-center">
+              <Button
+                type="button"
+                onClick={() => {
+                  append({
+                    position: "",
+                    company: "",
+                    startDate: "",
+                    endDate: "",
+                    description: "",
+                  });
+                }}
+              >
+                Add Work Experience
+              </Button>
+            </div>
           </div>
-        </div>
+        </FormProvider>
       </Form>
     </div>
   );
@@ -74,6 +97,104 @@ const WorkExperienceForm = ({ resumeData, setResumeData }: EditorFormProps) => {
 
 export default WorkExperienceForm;
 
-const WorkExperienceItem = () => {
-  return <div>Work Experience</div>;
+interface workExperienceItemProp {
+  form: UseFormReturn<WorkExperienceValues>;
+  index: number;
+  remove: (index: number) => void;
+}
+
+const WorkExperienceItem = ({
+  form,
+  index,
+  remove,
+}: workExperienceItemProp) => {
+  return (
+    <div className="bg-background space-y-3 rounded-md border p-3">
+      <div className="flex justify-between gap-2">
+        <span className="font-semibold">Work experience {index + 1}</span>
+      </div>
+      <FormField
+        control={form.control}
+        name={`workExperiences.${index}.position`}
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Job Title</FormLabel>
+            <FormControl>
+              <Input {...field} autoFocus />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormField
+        control={form.control}
+        name={`workExperiences.${index}.company`}
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Company</FormLabel>
+            <FormControl>
+              <Input {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <div className="grid grid-cols-2 gap-3">
+        <FormField
+          control={form.control}
+          name={`workExperiences.${index}.startDate`}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Start Date</FormLabel>
+              <FormControl>
+                <Input
+                  type="date"
+                  {...field}
+                  value={field.value?.slice(0, 10)}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name={`workExperiences.${index}.endDate`}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>End Date</FormLabel>
+              <FormControl>
+                <Input
+                  type="date"
+                  {...field}
+                  value={field.value?.slice(0, 10)}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </div>
+      <FormDescription>
+        Leave <span className="font-semibold">end date</span> empty if you are
+        currently working
+      </FormDescription>
+      <FormField
+        control={form.control}
+        name={`workExperiences.${index}.description`}
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Company</FormLabel>
+            <FormControl>
+              <Textarea {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <Button type="button" variant="destructive" onClick={() => remove(index)}>
+        Remove
+      </Button>
+    </div>
+  );
 };
