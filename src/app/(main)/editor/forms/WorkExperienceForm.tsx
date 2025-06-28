@@ -1,25 +1,21 @@
+import React, { useEffect, useRef } from "react";
+import { useForm, FormProvider, useFieldArray, UseFormReturn } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import {
-  FormControl,
-  FormDescription,
+  Form,
   FormField,
   FormItem,
   FormLabel,
+  FormControl,
   FormMessage,
+  FormDescription,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { EditorFormProps } from "@/lib/types";
 import { workExperienceSchema, WorkExperienceValues } from "@/lib/validation";
-import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect } from "react";
-import {
-  Form,
-  FormProvider,
-  useFieldArray,
-  useForm,
-  UseFormReturn,
-} from "react-hook-form";
+import { GripHorizontal } from "lucide-react";
 
 const WorkExperienceForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   const form = useForm<WorkExperienceValues>({
@@ -102,11 +98,21 @@ const WorkExperienceItem = ({
   index,
   remove,
 }: workExperienceItemProp) => {
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    if (index === 0) {
+      inputRef.current?.focus();
+    }
+  }, [index]);
+
   return (
     <div className="bg-background space-y-3 rounded-md border p-3">
       <div className="flex justify-between gap-2">
         <span className="font-semibold">Work experience {index + 1}</span>
+        <GripHorizontal className="size-5 cursor-grab text-muted-foreground"/>
       </div>
+
       <FormField
         control={form.control}
         name={`workExperiences.${index}.position`}
@@ -114,12 +120,13 @@ const WorkExperienceItem = ({
           <FormItem>
             <FormLabel>Job Title</FormLabel>
             <FormControl>
-              <Input {...field} autoFocus />
+              <Input {...field} type="text" ref={inputRef} />
             </FormControl>
             <FormMessage />
           </FormItem>
         )}
       />
+
       <FormField
         control={form.control}
         name={`workExperiences.${index}.company`}
@@ -127,12 +134,13 @@ const WorkExperienceItem = ({
           <FormItem>
             <FormLabel>Company</FormLabel>
             <FormControl>
-              <Input {...field} />
+              <Input {...field} type="text" />
             </FormControl>
             <FormMessage />
           </FormItem>
         )}
       />
+
       <div className="grid grid-cols-2 gap-3">
         <FormField
           control={form.control}
@@ -144,7 +152,7 @@ const WorkExperienceItem = ({
                 <Input
                   type="date"
                   {...field}
-                  value={field.value?.slice(0, 10)}
+                  value={field.value?.slice(0, 10) ?? ""}
                 />
               </FormControl>
               <FormMessage />
@@ -161,7 +169,7 @@ const WorkExperienceItem = ({
                 <Input
                   type="date"
                   {...field}
-                  value={field.value?.slice(0, 10)}
+                  value={field.value?.slice(0, 10) ?? ""}
                 />
               </FormControl>
               <FormMessage />
@@ -169,16 +177,18 @@ const WorkExperienceItem = ({
           )}
         />
       </div>
+
       <FormDescription>
         Leave <span className="font-semibold">end date</span> empty if you are
         currently working
       </FormDescription>
+
       <FormField
         control={form.control}
         name={`workExperiences.${index}.description`}
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Company</FormLabel>
+            <FormLabel>Description</FormLabel>
             <FormControl>
               <Textarea {...field} />
             </FormControl>
@@ -186,6 +196,7 @@ const WorkExperienceItem = ({
           </FormItem>
         )}
       />
+
       <Button type="button" variant="destructive" onClick={() => remove(index)}>
         Remove
       </Button>
