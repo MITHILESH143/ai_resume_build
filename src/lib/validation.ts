@@ -30,25 +30,25 @@ export const personalInfoSchema = z.object({
   email: optionalString,
 });
 
-export type PersonalInfoSchema = z.infer<typeof personalInfoSchema>;
+export type PersonalInfoValues = z.infer<typeof personalInfoSchema>;
 
 //creting the dedicated schema for workexperience
 export const workExperienceSchema = z.object({
   //putting it into array cause one person can have a multipule schemas
-  workExperiences: z.array(
-    z
-      .object({
+  workExperiences: z
+    .array(
+      z.object({
         position: optionalString,
         company: optionalString,
         startDate: optionalString,
         endDate: optionalString,
         description: optionalString,
-      })
-      .optional(),
-  ),
+      }),
+    )
+    .optional(),
 });
 
-export type WorkExperienceSchema = z.infer<typeof workExperienceSchema>;
+export type WorkExperienceValues = z.infer<typeof workExperienceSchema>;
 
 //whole resume data of user
 export const resumeSchema = z.object({
