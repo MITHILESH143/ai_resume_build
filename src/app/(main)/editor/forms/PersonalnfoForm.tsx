@@ -8,13 +8,13 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { EditorFormProps } from "@/lib/types";
-import { personalInfoSchema, PersonalInfoSchema } from "@/lib/validation";
+import { personalInfoSchema, PersonalInfoValues } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 const PersonalnfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
-  const form = useForm<PersonalInfoSchema>({
+  const form = useForm<PersonalInfoValues>({
     resolver: zodResolver(personalInfoSchema),
     defaultValues: {
       firstName: resumeData?.firstName || "",
@@ -48,7 +48,7 @@ const PersonalnfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
       </div>
 
       <Form {...form}>
-        <div className="space-y-3">
+        <form className="space-y-3">
           <FormField
             control={form.control}
             name="photo"
@@ -174,7 +174,7 @@ const PersonalnfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
               </FormItem>
             )}
           />
-        </div>
+        </form>
       </Form>
     </div>
   );
