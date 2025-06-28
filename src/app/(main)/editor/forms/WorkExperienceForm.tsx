@@ -30,22 +30,16 @@ const WorkExperienceForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   });
 
   useEffect(() => {
-    const { unsubscribe } = form.watch(async (data, { name, type }) => {
-      if (type === "change" && name) {
-        const isValid = await form.trigger();
-        if (!isValid) return;
-        //update the resume data
-        setResumeData({
-          ...resumeData,
-          workExperiences:
-            data.workExperiences?.filter((exp) => exp !== undefined) || [],
-        });
-        console.log(data.workExperiences);
-      }
+    const subscription = form.watch((data) => {
+      setResumeData({
+        ...resumeData,
+        workExperiences:
+          data.workExperiences?.filter((exp) => exp !== undefined) || [],
+      });
     });
 
-    return unsubscribe;
-  }, [form, resumeData, setResumeData]);
+    return () => subscription.unsubscribe?.();
+  }, [form, form.watch, resumeData, setResumeData]);
 
   const { fields, append, remove } = useFieldArray({
     control: form.control,
