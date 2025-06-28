@@ -1,30 +1,21 @@
 "use client";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams} from "next/navigation";
 import { steps } from "./steps";
 import BreadCrumbs from "./BreadCrumbs";
 import Footer from "./Footer";
-import { useState, useEffect } from "react";
+import { useState} from "react";
 import { ResumeValues } from "@/lib/validation";
 
 const ResumeEditior = () => {
   const searchParams = useSearchParams();
-  const router = useRouter();
-  const [currentStep, setCurrentStep] = useState<string>(steps[0].key);
+  const currentStep = searchParams.get("step") || steps[0].key;
 
   const [resumeData, setResumeData] = useState<ResumeValues>({});
 
-  useEffect(() => {
-    const stepFromUrl = searchParams.get("step");
-    if (stepFromUrl && steps.some(step => step.key === stepFromUrl)) {
-      setCurrentStep(stepFromUrl);
-    }
-  }, [searchParams]);
-
   function setStep(key: string) {
-    setCurrentStep(key);
     const newSearchParams = new URLSearchParams(searchParams);
     newSearchParams.set("step", key);
-    router.push(`?${newSearchParams.toString()}`, { scroll: false });
+    window.history.pushState(null,"",`?${newSearchParams.toString()}`)
   }
 
   const FormComponent = steps.find(
@@ -53,7 +44,7 @@ const ResumeEditior = () => {
             )}
           </div>
           <div className="grow md:border-r" />
-          <div className="hidden w-1/2 md:flex overflow-x-auto">
+          <div className="hidden w-1/2 overflow-x-auto md:flex">
             <pre>{JSON.stringify(resumeData, null, 2)}</pre>
           </div>
         </div>

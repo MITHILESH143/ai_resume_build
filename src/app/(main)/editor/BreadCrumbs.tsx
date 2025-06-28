@@ -14,12 +14,9 @@ interface BreadCrumbProps {
   setCurrentStep: (step: string) => void;
 }
 
-const BreadCrumbs: React.FC<BreadCrumbProps> = ({
-  currentStep,
-  setCurrentStep,
-}) => {
+const BreadCrumbs = ({ currentStep, setCurrentStep }: BreadCrumbProps) => {
   return (
-    <div className="flex justify-center my-2">
+    <div className="my-2 flex justify-center">
       <Breadcrumb>
         <BreadcrumbList>
           {steps.map((step) => (
@@ -30,12 +27,12 @@ const BreadCrumbs: React.FC<BreadCrumbProps> = ({
                 ) : (
                   <BreadcrumbLink asChild>
                     <button onClick={() => setCurrentStep(step.key)}>
-                      {step.title}
+                      {step.title} 
                     </button>
                   </BreadcrumbLink>
                 )}
               </BreadcrumbItem>
-              <BreadcrumbSeparator className="last:hidden"/>
+              <BreadcrumbSeparator className="last:hidden" />
             </React.Fragment>
           ))}
         </BreadcrumbList>
