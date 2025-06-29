@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { useForm, FormProvider, useFieldArray, UseFormReturn } from "react-hook-form";
+import { useForm, useFieldArray, UseFormReturn } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import {
@@ -51,8 +51,7 @@ const WorkExperienceForm = ({ resumeData, setResumeData }: EditorFormProps) => {
         </p>
       </div>
       <Form {...form}>
-        <FormProvider {...form}>
-          <div className="space-y-3">
+          <form className="space-y-3">
             {fields.map((field, index) => (
               <WorkExperienceItem
                 key={field.id}
@@ -78,8 +77,8 @@ const WorkExperienceForm = ({ resumeData, setResumeData }: EditorFormProps) => {
                 Add Work Experience
               </Button>
             </div>
-          </div>
-        </FormProvider>
+          </form>
+        
       </Form>
     </div>
   );
@@ -87,7 +86,7 @@ const WorkExperienceForm = ({ resumeData, setResumeData }: EditorFormProps) => {
 
 export default WorkExperienceForm;
 
-interface workExperienceItemProp {
+interface WorkExperienceItem {
   form: UseFormReturn<WorkExperienceValues>;
   index: number;
   remove: (index: number) => void;
@@ -97,7 +96,7 @@ const WorkExperienceItem = ({
   form,
   index,
   remove,
-}: workExperienceItemProp) => {
+}: WorkExperienceItem) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {

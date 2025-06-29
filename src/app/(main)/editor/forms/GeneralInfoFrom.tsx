@@ -45,7 +45,7 @@ const GeneralInfoFrom = ({ resumeData, setResumeData }: EditorFormProps) => {
         </p>
       </div>
       <Form {...form}>
-        <form action="" className="space-y-3">
+        <form className="space-y-3">
           <FormField
             control={form.control}
             name="title"
