@@ -42,7 +42,10 @@ const SkillsForm = ({ resumeData, setResumeData }: EditorFormProps) => {
     <div className="mx-auto max-w-xl space-y-6">
       <div className="space-y-1.5 text-center">
         <h2 className="text-2xl font-semibold">Skills</h2>
-        <p className="text-muted-foreground text-sm">What are you good at?</p>
+        <p className="text-muted-foreground text-sm">
+          List your technical and soft skills. Highlight what sets you apart as
+          a developer.
+        </p>
       </div>
       <Form {...form}>
         <FormField
@@ -54,14 +57,17 @@ const SkillsForm = ({ resumeData, setResumeData }: EditorFormProps) => {
               <FormControl>
                 <Textarea
                   {...field}
-                  placeholder="e.g. React.js, graphic designing,....."
+                  placeholder="e.g. JavaScript, React.js, Node.js, MongoDB, teamwork, communication..."
                   onChange={(e) => {
                     const skillsString = e.target.value.split(",");
                     field.onChange(skillsString);
                   }}
                 />
               </FormControl>
-              <FormDescription>Separate each skill with ( , )</FormDescription>
+              <FormDescription>
+                Separate each skill with a comma (,). Include both technical and
+                interpersonal skills.
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}

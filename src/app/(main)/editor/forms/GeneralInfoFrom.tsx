@@ -53,7 +53,11 @@ const GeneralInfoFrom = ({ resumeData, setResumeData }: EditorFormProps) => {
               <FormItem>
                 <FormLabel>Project Name</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="My cool resume" autoFocus />
+                  <Input
+                    {...field}
+                    placeholder="e.g. Full-Stack Developer Resume"
+                    autoFocus
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -68,7 +72,7 @@ const GeneralInfoFrom = ({ resumeData, setResumeData }: EditorFormProps) => {
                 <FormControl>
                   <Input
                     {...field}
-                    placeholder="A resume for my next job"
+                    placeholder="Created for applying to frontend or Full-stack roles at startups"
                     autoFocus
                   />
                 </FormControl>

@@ -1,6 +1,7 @@
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -43,8 +44,10 @@ const PersonalnfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   return (
     <div className="mx-auto max-w-xl space-y-6">
       <div className="space-y-1.5 text-center">
-        <h2 className="text-2xl font-semibold">Personal Info</h2>
-        <p className="text-muted-foreground text-sm">Tell us about yourself</p>
+        <h2 className="text-2xl font-semibold">Personal Information</h2>
+        <p className="text-muted-foreground text-sm">
+          Share your basic details for the top section of your resume.
+        </p>
       </div>
 
       <Form {...form}>
@@ -75,6 +78,9 @@ const PersonalnfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
                     }}
                   />
                 </FormControl>
+                <FormDescription>
+                  Upload a professional headshot (max 4MB)
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -87,7 +93,7 @@ const PersonalnfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
                 <FormItem>
                   <FormLabel>First Name</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} type="text" placeholder="e.g. Yash"/>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -100,7 +106,7 @@ const PersonalnfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
                 <FormItem>
                   <FormLabel>Last Name</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} type="text" placeholder="e.g. Shetye"/>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -114,7 +120,7 @@ const PersonalnfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
               <FormItem>
                 <FormLabel>Job Title</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input {...field} type="text" placeholder="e.g. Full Stack Developer"/>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -128,7 +134,7 @@ const PersonalnfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
                 <FormItem>
                   <FormLabel>City</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} type="text" placeholder="e.g. Mumbai"/>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -141,7 +147,7 @@ const PersonalnfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
                 <FormItem>
                   <FormLabel>Country</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} type="text" placeholder="e.g. India"/>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -155,7 +161,7 @@ const PersonalnfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
               <FormItem>
                 <FormLabel>Contact No</FormLabel>
                 <FormControl>
-                  <Input {...field} type="tel" />
+                  <Input {...field} type="tel" placeholder="e.g. +91 8787878787"/>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -168,8 +174,9 @@ const PersonalnfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input type="email" {...field} />
+                  <Input type="email" {...field} placeholder="e.g. shetyeyash444@gmail.com"/>
                 </FormControl>
+                <FormDescription>Use a professional email address</FormDescription>
                 <FormMessage />
               </FormItem>
             )}

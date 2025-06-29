@@ -45,40 +45,40 @@ const WorkExperienceForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   return (
     <div className="mx-auto max-w-xl space-y-6">
       <div className="space-y-1.5 text-center">
-        <h2 className="text-2xl font-semibold">Work experience</h2>
+        <h2 className="text-2xl font-semibold">Work Experience</h2>
         <p className="text-muted-foreground text-sm">
-          Add as many work experience as you like
+          Add previous roles you have worked in including internships,
+          freelancing, full-time jobs.
         </p>
       </div>
       <Form {...form}>
-          <form className="space-y-3">
-            {fields.map((field, index) => (
-              <WorkExperienceItem
-                key={field.id}
-                index={index}
-                form={form}
-                remove={remove}
-              />
-            ))}
+        <form className="space-y-3">
+          {fields.map((field, index) => (
+            <WorkExperienceItem
+              key={field.id}
+              index={index}
+              form={form}
+              remove={remove}
+            />
+          ))}
 
-            <div className="flex justify-center">
-              <Button
-                type="button"
-                onClick={() => {
-                  append({
-                    position: "",
-                    company: "",
-                    startDate: "",
-                    endDate: "",
-                    description: "",
-                  });
-                }}
-              >
-                Add Work Experience
-              </Button>
-            </div>
-          </form>
-        
+          <div className="flex justify-center">
+            <Button
+              type="button"
+              onClick={() => {
+                append({
+                  position: "",
+                  company: "",
+                  startDate: "",
+                  endDate: "",
+                  description: "",
+                });
+              }}
+            >
+              Add Work Experience
+            </Button>
+          </div>
+        </form>
       </Form>
     </div>
   );
@@ -92,11 +92,7 @@ interface WorkExperienceItem {
   remove: (index: number) => void;
 }
 
-const WorkExperienceItem = ({
-  form,
-  index,
-  remove,
-}: WorkExperienceItem) => {
+const WorkExperienceItem = ({ form, index, remove }: WorkExperienceItem) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
@@ -109,7 +105,7 @@ const WorkExperienceItem = ({
     <div className="bg-background space-y-3 rounded-md border p-3">
       <div className="flex justify-between gap-2">
         <span className="font-semibold">Work experience {index + 1}</span>
-        <GripHorizontal className="size-5 cursor-grab text-muted-foreground"/>
+        <GripHorizontal className="text-muted-foreground size-5 cursor-grab" />
       </div>
 
       <FormField
@@ -119,7 +115,12 @@ const WorkExperienceItem = ({
           <FormItem>
             <FormLabel>Job Title</FormLabel>
             <FormControl>
-              <Input {...field} type="text" ref={inputRef} />
+              <Input
+                {...field}
+                type="text"
+                ref={inputRef}
+                placeholder="e.g. Full Stack Developer"
+              />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -131,9 +132,13 @@ const WorkExperienceItem = ({
         name={`workExperiences.${index}.company`}
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Company</FormLabel>
+            <FormLabel>Company Name</FormLabel>
             <FormControl>
-              <Input {...field} type="text" />
+              <Input
+                {...field}
+                type="text"
+                placeholder="e.g. Infosys,Freelancing"
+              />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -179,7 +184,7 @@ const WorkExperienceItem = ({
 
       <FormDescription>
         Leave <span className="font-semibold">end date</span> empty if you are
-        currently working
+        currently working here.
       </FormDescription>
 
       <FormField
@@ -189,7 +194,10 @@ const WorkExperienceItem = ({
           <FormItem>
             <FormLabel>Description</FormLabel>
             <FormControl>
-              <Textarea {...field} />
+              <Textarea
+                {...field}
+                placeholder="Describe your responsibilities, tech used, or key contributions"
+              />
             </FormControl>
             <FormMessage />
           </FormItem>

@@ -1,6 +1,7 @@
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -37,8 +38,8 @@ const SummaryForm = ({ resumeData, setResumeData }: EditorFormProps) => {
       <div className="space-y-1.5 text-center">
         <h2 className="text-2xl font-semibold">Professional Summary</h2>
         <p className="text-muted-foreground text-sm">
-          Write a professional summary or let AI generate one from your entered
-          data
+          Write a short summary about your experience, or let AI help generate
+          one from your inputs.
         </p>
       </div>
       <Form {...form}>
@@ -51,13 +52,17 @@ const SummaryForm = ({ resumeData, setResumeData }: EditorFormProps) => {
               <FormControl>
                 <Textarea
                   {...field}
-                  placeholder="A brief engaging text about yourself"
+                  placeholder="Add a Professional Summary"
                 />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
+        <FormDescription>
+          Highlight your top skills, years of experience, or career goals in 2–3
+          lines.
+        </FormDescription>
       </Form>
     </div>
   );

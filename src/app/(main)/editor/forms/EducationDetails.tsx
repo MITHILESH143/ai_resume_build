@@ -14,11 +14,7 @@ import { educationSchema, EducationValues } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { GripHorizontal } from "lucide-react";
 import React, { useEffect, useRef } from "react";
-import {
-  useFieldArray,
-  useForm,
-  UseFormReturn,
-} from "react-hook-form";
+import { useFieldArray, useForm, UseFormReturn } from "react-hook-form";
 
 const EducationDetails = ({ resumeData, setResumeData }: EditorFormProps) => {
   const form = useForm<EducationValues>({
@@ -50,36 +46,37 @@ const EducationDetails = ({ resumeData, setResumeData }: EditorFormProps) => {
       <div className="space-y-1.5 text-center">
         <h2 className="text-2xl font-semibold">Education Details</h2>
         <p className="text-muted-foreground text-sm">
-          Add as many as education details you like.
+          List your educational background including degrees, diplomas, or
+          certifications.
         </p>
       </div>
       <Form {...form}>
-          <form className="space-y-3">
-            {fields.map((field, index) => (
-              <EducationItem
-                key={field.id}
-                index={index}
-                form={form}
-                remove={remove}
-              />
-            ))}
+        <form className="space-y-3">
+          {fields.map((field, index) => (
+            <EducationItem
+              key={field.id}
+              index={index}
+              form={form}
+              remove={remove}
+            />
+          ))}
 
-            <div className="flex justify-center">
-              <Button
-                type="button"
-                onClick={() => {
-                  append({
-                    degree: "",
-                    school: "",
-                    startDate: "",
-                    endDate: "",
-                  });
-                }}
-              >
-                Add Education
-              </Button>
-            </div>
-          </form>
+          <div className="flex justify-center">
+            <Button
+              type="button"
+              onClick={() => {
+                append({
+                  degree: "",
+                  school: "",
+                  startDate: "",
+                  endDate: "",
+                });
+              }}
+            >
+              Add Education
+            </Button>
+          </div>
+        </form>
       </Form>
     </div>
   );
@@ -104,7 +101,7 @@ const EducationItem = ({ form, index, remove }: EducationItemProp) => {
   return (
     <div className="bg-background space-y-3 rounded-md border p-3">
       <div className="flex justify-between gap-2">
-        <span className="font-semibold">Education Details {index + 1}</span>
+        <span className="font-semibold">Education #{index + 1}</span>
         <GripHorizontal className="text-muted-foreground size-5 cursor-grab" />
       </div>
 
@@ -174,8 +171,8 @@ const EducationItem = ({ form, index, remove }: EducationItemProp) => {
       </div>
 
       <FormDescription>
-        Leave <span className="font-semibold">end date</span> empty if you are
-        currently pursuing education
+        Leave the <span className="font-semibold">end date</span> blank if you
+        are currently pursuing this degree.
       </FormDescription>
 
       <Button type="button" variant="destructive" onClick={() => remove(index)}>
