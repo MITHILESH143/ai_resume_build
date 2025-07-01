@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
-export default function useDimenion(
-  containerRef: React.RefObject<HTMLElement>,
+export default function useDimension(
+  containerRef: React.RefObject<HTMLElement | null>
 ) {
   const [dimensions, setdimensions] = useState({ width: 0, height: 0 });
 
@@ -10,12 +10,12 @@ export default function useDimenion(
 
     function getDimensions() {
       return {
-        width: currentRef.offsetWidth || 0,
-        height: currentRef.offsetHeight || 0,
+        width: currentRef?.offsetWidth || 0,
+        height: currentRef?.offsetHeight || 0,
       };
     }
 
-    const resizeOberver = new ResizeObserver((entries) => {
+    const resizeObserver = new ResizeObserver((entries) => {
       const entry = entries[0];
       if (entry) {
         setdimensions(getDimensions());
@@ -23,16 +23,16 @@ export default function useDimenion(
     });
 
     if (currentRef) {
-      resizeOberver.observe(currentRef);
+      resizeObserver.observe(currentRef);
       setdimensions(getDimensions());
     }
 
     return () => {
       if (currentRef) {
-        resizeOberver.unobserve(currentRef);
+        resizeObserver.unobserve(currentRef);
       }
 
-      resizeOberver.disconnect();
+      resizeObserver.disconnect();
     };
   }, [containerRef]);
 
