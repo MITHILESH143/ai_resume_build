@@ -37,7 +37,7 @@ const ResumeEditior = () => {
         <div className="flex w-full max-h-[550px]">
           <div className="w-full md:w-1/2 flex flex-col">
             {/* Fixed Breadcrumbs Section */}
-            <div className="flex-shrink-0  bg-background sticky top-0 z-10">
+            <div className="flex-shrink-0  bg-background sticky top-0 ">
               <BreadCrumbs currentStep={currentStep} setCurrentStep={setStep} />
             </div>
             
