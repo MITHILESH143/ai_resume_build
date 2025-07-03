@@ -3,8 +3,17 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export const PersonalInfoHeader = ({ resumeData }: ResumeSectionProps) => {
-  const { firstName, lastName, phone, photo, jobTitle, city, country, email } =
-    resumeData;
+  const {
+    firstName,
+    lastName,
+    phone,
+    photo,
+    jobTitle,
+    city,
+    country,
+    email,
+    colorHex,
+  } = resumeData;
 
   const [photoSrc, setPhotoSrc] = useState(photo instanceof File ? "" : photo);
 
@@ -31,17 +40,17 @@ export const PersonalInfoHeader = ({ resumeData }: ResumeSectionProps) => {
 
       <div className="space-y-1.5">
         <div className="space-y-1">
-          <p className="text-3xl font-bold">
+          <p className="text-3xl font-bold" style={{ color: colorHex }}>
             {firstName} {lastName}
           </p>
-          <p className="font-medium">{jobTitle}</p>
+          <p className="font-medium" style={{ color: colorHex }}>{jobTitle}</p>
         </div>
         <p className="text-xs text-gray-500">
           {city}
           {city && country && ", "}
           {country}
           {(city || country) && (phone || email) && " • "}
-          {[phone,email].filter(Boolean).join(" • ")}
+          {[phone, email].filter(Boolean).join(" • ")}
         </p>
       </div>
     </div>

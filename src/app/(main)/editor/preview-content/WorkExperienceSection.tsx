@@ -2,7 +2,7 @@ import { ResumeSectionProps } from "@/lib/types";
 import { formatDate } from "date-fns";
 
 const WorkExperienceSection = ({ resumeData }: ResumeSectionProps) => {
-  const { workExperiences } = resumeData;
+  const { workExperiences ,colorHex} = resumeData;
 
   const workExperienceIsNotEmpty = workExperiences?.filter(
     (exp) => Object.values(exp).filter(Boolean).length > 0,
@@ -12,20 +12,20 @@ const WorkExperienceSection = ({ resumeData }: ResumeSectionProps) => {
 
   return (
     <>
-      <hr className="mb-2 border-t-2 border-primary" />
+      <hr className="mb-2 border-t-2 border-black" style={{ borderColor: colorHex }}/>
       <div className="space-y-1">
-        <h3 className="text-lg font-semibold text-gray-800">Work Experience</h3>
+        <h3 className="text-lg font-semibold text-gray-800" style={{ color: colorHex }}>Work Experience</h3>
 
         {workExperienceIsNotEmpty.map((exp, index) => (
           <div key={index} className="space-y-1 ml-2">
             {/* Position & Dates */}
             <div className="flex justify-between items-start text-sm font-semibold">
               <div>
-                <p className="text-base font-bold text-gray-900">{exp.position}</p>
+                <p className="text-base font-bold text-gray-900" style={{ color: colorHex }}>{exp.position}</p>
                 <p className="text-sm font-medium text-gray-600">{exp.company}</p>
               </div>
               {exp.startDate && (
-                <span className="text-xs text-gray-500">
+                <span className="text-xs text-gray-500" style={{ color: colorHex }}>
                   {formatDate(exp.startDate, "MM/yyyy")} -{" "}
                   {exp?.endDate ? formatDate(exp.endDate, "MM/yyyy") : "Present"}
                 </span>
