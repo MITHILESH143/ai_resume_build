@@ -79,7 +79,6 @@ export const summerySchema = z.object({
 
 export type SummaryValues = z.infer<typeof summerySchema>;
 
-
 //whole resume data of user
 export const resumeSchema = z.object({
   ...generalInfoSchema.shape,
@@ -88,6 +87,8 @@ export const resumeSchema = z.object({
   ...educationSchema.shape,
   ...skillSchema.shape,
   ...summerySchema.shape,
+  colorHex: optionalString,
+  borderStyle: optionalString,
 });
 
 export type ResumeValues = Omit<z.infer<typeof resumeSchema>, "photo"> & {
