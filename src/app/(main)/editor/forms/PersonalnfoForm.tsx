@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -11,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { EditorFormProps } from "@/lib/types";
 import { personalInfoSchema, PersonalInfoValues } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 
 const PersonalnfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
@@ -41,6 +42,8 @@ const PersonalnfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
     return unsubscribe;
   }, [form, resumeData, setResumeData]);
 
+  const inputRef = useRef<HTMLInputElement>(null);
+
   return (
     <div className="mx-auto max-w-xl space-y-6">
       <div className="space-y-1.5 text-center">
@@ -58,26 +61,43 @@ const PersonalnfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
             render={({ field: { value, onChange, ...rest } }) => (
               <FormItem>
                 <FormLabel>Your Photo</FormLabel>
-                <FormControl>
-                  <Input
-                    type="file"
-                    accept="image/*"
-                    name={rest.name}
-                    onBlur={rest.onBlur}
-                    ref={rest.ref}
-                    value={undefined}
-                    onChange={async (e) => {
-                      const file = e.target.files?.[0];
-                      onChange(file);
+                <div className="flex items-center gap-2">
+                  <FormControl>
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      name={rest.name}
+                      onBlur={rest.onBlur}
+                      ref={(el) => {
+                        inputRef.current = el;
+                        rest.ref(el);
+                      }}
+                      value={undefined}
+                      onChange={async (e) => {
+                        const file = e.target.files?.[0];
+                        onChange(file);
 
-                      if (file) {
-                        setTimeout(async () => {
-                          await form.trigger("photo");
-                        }, 0);
+                        if (file) {
+                          setTimeout(async () => {
+                            await form.trigger("photo");
+                          }, 0);
+                        }
+                      }}
+                    />
+                  </FormControl>
+                  <Button
+                    variant="secondary"
+                    type="button"
+                    onClick={() => {
+                      onChange(null);
+                      if (inputRef.current) {
+                        inputRef.current.value = "";
                       }
                     }}
-                  />
-                </FormControl>
+                  >
+                    Remove
+                  </Button>
+                </div>
                 <FormDescription>
                   Upload a professional headshot (max 4MB)
                 </FormDescription>
@@ -93,7 +113,7 @@ const PersonalnfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
                 <FormItem>
                   <FormLabel>First Name</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="e.g. Yash"/>
+                    <Input {...field} type="text" placeholder="e.g. Yash" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -106,7 +126,7 @@ const PersonalnfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
                 <FormItem>
                   <FormLabel>Last Name</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="e.g. Shetye"/>
+                    <Input {...field} type="text" placeholder="e.g. Shetye" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -120,7 +140,11 @@ const PersonalnfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
               <FormItem>
                 <FormLabel>Job Title</FormLabel>
                 <FormControl>
-                  <Input {...field} type="text" placeholder="e.g. Full Stack Developer"/>
+                  <Input
+                    {...field}
+                    type="text"
+                    placeholder="e.g. Full Stack Developer"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -134,7 +158,7 @@ const PersonalnfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
                 <FormItem>
                   <FormLabel>City</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="e.g. Mumbai"/>
+                    <Input {...field} type="text" placeholder="e.g. Mumbai" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -147,7 +171,7 @@ const PersonalnfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
                 <FormItem>
                   <FormLabel>Country</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="e.g. India"/>
+                    <Input {...field} type="text" placeholder="e.g. India" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -161,7 +185,11 @@ const PersonalnfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
               <FormItem>
                 <FormLabel>Contact No</FormLabel>
                 <FormControl>
-                  <Input {...field} type="tel" placeholder="e.g. +91 8787878787"/>
+                  <Input
+                    {...field}
+                    type="tel"
+                    placeholder="e.g. +91 8787878787"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -174,9 +202,15 @@ const PersonalnfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input type="email" {...field} placeholder="e.g. shetyeyash444@gmail.com"/>
+                  <Input
+                    type="email"
+                    {...field}
+                    placeholder="e.g. shetyeyash444@gmail.com"
+                  />
                 </FormControl>
-                <FormDescription>Use a professional email address</FormDescription>
+                <FormDescription>
+                  Use a professional email address
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
