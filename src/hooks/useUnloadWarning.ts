@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-const useUnload = (condition = true) => {
+const useUnloadWarning = (condition = true) => {
   useEffect(() => {
     if (!condition) return;
 
@@ -14,4 +14,4 @@ const useUnload = (condition = true) => {
   },[condition]);
 };
 
-export default useUnload;
+export default useUnloadWarning;
