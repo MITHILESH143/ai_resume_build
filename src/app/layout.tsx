@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "next-themes";
+import { Toaster } from "@/components/ui/sonner";
 
 // Load Inter font with CSS variable
 const inter = Inter({
@@ -35,6 +36,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             {children}
+            <Toaster duration={100} closeButton/>
           </ThemeProvider>
         </body>
       </html>
