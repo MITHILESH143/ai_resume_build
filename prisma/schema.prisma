@@ -14,20 +14,20 @@ model Resume {
   id     String @id @default(cuid())
   userId String
 
-  title       String
-  description String
+  title       String?
+  description String?
 
-  photoUrl    String
+  photoUrl    String?
   colorHex    String @default("#000000")
   borderStyle String @default("squircle")
-  summary     String
-  fisrtName   String
-  lastName    String
-  jobtitle    String
-  city        String
-  country     String
-  phone       String
-  email       String
+  summary     String?
+  firstName   String?
+  lastName    String?
+  jobTitle    String?
+  city        String?
+  country     String?
+  phone       String?
+  email       String?
 
   workExperiences WorkExperience[]
   educations      Education[]
@@ -60,10 +60,10 @@ model WorkExperience {
 model Education {
   id String @id @default(cuid())
 
-  degree    String
-  school    String
-  startDate DateTime
-  endDate   DateTime
+  degree    String?
+  school    String?
+  startDate DateTime?
+  endDate   DateTime?
 
   resumId String
   resume  Resume @relation(fields: [resumId], references: [id])
