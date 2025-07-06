@@ -2,11 +2,13 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import React from "react";
 import { steps } from "./steps";
-import { FileUserIcon, PenLineIcon } from "lucide-react";
+import { FileUserIcon, PenLineIcon, CloudIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface FooterProp {
   currentStep: string;
   showPreview: boolean;
+  isSaving: boolean;
   setCurrentSteps: (step: string) => void;
   setShowPreview: (show: boolean) => void;
 }
@@ -16,6 +18,7 @@ const Footer = ({
   setCurrentSteps,
   showPreview,
   setShowPreview,
+  isSaving
 }: FooterProp) => {
   const previousStep = steps.find(
     (_, index) => steps[index + 1]?.key === currentStep,
@@ -54,11 +57,20 @@ const Footer = ({
         >
           {showPreview ? <PenLineIcon /> : <FileUserIcon />}
         </Button>
-        <div className="flex items-start gap-3">
+        <div className="flex items-center gap-3">
           <Button variant="secondary" asChild>
-            <Link href="/resumes"> Close</Link>
+            <Link href="/resumes">Close</Link>
           </Button>
-          <p className="text-muted-foreground opacity-0">Saving...</p>
+          <div
+            className={cn(
+              "flex items-center gap-2 rounded-full bg-blue-50 px-3 py-1.5 text-sm font-medium text-blue-700 opacity-0 transition-all duration-300 ease-in-out dark:bg-blue-900/30 dark:text-blue-400",
+              isSaving && "opacity-100 scale-100",
+              !isSaving && "scale-95"
+            )}
+          >
+            <CloudIcon className={cn("h-4 w-4", isSaving && "animate-pulse")} />
+            <span>Saving...</span>
+          </div>
         </div>
       </div>
     </footer>
