@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { saveResume } from "./actions";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { fileReplacer } from "@/lib/utils";
 
 const useAutoSave = (resumeData: ResumeValues) => {
   const searchParams = useSearchParams();
@@ -30,13 +31,17 @@ const useAutoSave = (resumeData: ResumeValues) => {
         setIsSaving(true);
         setIsError(false);
         const newData = structuredClone(debounceData);
+        console.log("NEW DATA", newData);
         const updatedResume = await saveResume({
           ...newData,
-          ...(lastSavedData.photo?.toString() === newData.photo?.toString() && {
+          ...(JSON.stringify(lastSavedData.photo, fileReplacer) ===
+            JSON.stringify(newData.photo, fileReplacer) && {
             photo: undefined,
           }),
           id: resumeId,
         });
+
+        console.log("UPDATED RESUME", updatedResume);
 
         setResumeId(updatedResume.id);
         setLastSavedData(newData);
@@ -77,7 +82,8 @@ const useAutoSave = (resumeData: ResumeValues) => {
     };
 
     const hasUnsavedChange =
-      JSON.stringify(resumeData) !== JSON.stringify(lastSavedData);
+      JSON.stringify(debounceData, fileReplacer) !==
+      JSON.stringify(lastSavedData, fileReplacer);
 
     if (hasUnsavedChange && debounceData && !isSaving && !isError) {
       save();
