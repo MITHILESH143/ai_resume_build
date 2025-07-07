@@ -20,7 +20,8 @@ export function fileReplacer(key: unknown, value: unknown) {
 export function mapToResumeData(data: ResumeServerData): ResumeValues {
   return {
     id: data.id || undefined,
-    jobTitle: data.title || undefined,
+    title:data.title || undefined,
+    jobTitle: data.jobTitle || undefined,
     description: data.description || undefined,
     photo: data.photoUrl || undefined,
     firstName: data.firstName || undefined,
@@ -31,7 +32,7 @@ export function mapToResumeData(data: ResumeServerData): ResumeValues {
     email: data.email || undefined,
     workExperiences: data.workExperiences.map((exp) => ({
       position: exp.position || undefined,
-      company: exp.compony || undefined,
+      company: exp.company || undefined,
       startDate: exp.startDate?.toISOString().split("T")[0],
       endDate: exp.endDate?.toISOString().split("T")[0],
       description: exp.description || undefined,
