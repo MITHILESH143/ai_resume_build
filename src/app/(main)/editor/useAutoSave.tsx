@@ -31,7 +31,7 @@ const useAutoSave = (resumeData: ResumeValues) => {
         setIsSaving(true);
         setIsError(false);
         const newData = structuredClone(debounceData);
-        console.log("NEW DATA", newData);
+        console.log("NEW DATA",newData)
         const updatedResume = await saveResume({
           ...newData,
           ...(JSON.stringify(lastSavedData.photo, fileReplacer) ===
@@ -41,7 +41,9 @@ const useAutoSave = (resumeData: ResumeValues) => {
           id: resumeId,
         });
 
-        console.log("UPDATED RESUME", updatedResume);
+        console.log("UPDATED RESUME",updatedResume)
+
+
 
         setResumeId(updatedResume.id);
         setLastSavedData(newData);
