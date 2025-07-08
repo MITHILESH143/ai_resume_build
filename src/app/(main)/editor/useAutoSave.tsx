@@ -31,7 +31,6 @@ const useAutoSave = (resumeData: ResumeValues) => {
         setIsSaving(true);
         setIsError(false);
         const newData = structuredClone(debounceData);
-        console.log("NEW DATA",newData)
         const updatedResume = await saveResume({
           ...newData,
           ...(JSON.stringify(lastSavedData.photo, fileReplacer) ===
@@ -40,10 +39,6 @@ const useAutoSave = (resumeData: ResumeValues) => {
           }),
           id: resumeId,
         });
-
-        console.log("UPDATED RESUME",updatedResume)
-
-
 
         setResumeId(updatedResume.id);
         setLastSavedData(newData);
@@ -60,24 +55,29 @@ const useAutoSave = (resumeData: ResumeValues) => {
       } catch (error) {
         setIsError(true);
         console.log(error);
-        toast(() => {
-          return (
-            <>
-              <div className="space-y-3">
-                <p>Could not save changes.</p>
-                <Button
-                  variant="secondary"
-                  onClick={() => {
-                    toast.dismiss();
-                    save();
-                  }}
-                >
-                  Retry
-                </Button>
-              </div>
-            </>
-          );
-        });
+        toast(
+          () => {
+            return (
+              <>
+                <div className="space-y-3">
+                  <p>Could not save changes.</p>
+                  <Button
+                    variant="secondary"
+                    onClick={() => {
+                      toast.dismiss();
+                      save();
+                    }}
+                  >
+                    Retry
+                  </Button>
+                </div>
+              </>
+            );
+          },
+          {
+            position: "bottom-right",
+          },
+        );
       } finally {
         setIsSaving(false);
       }
