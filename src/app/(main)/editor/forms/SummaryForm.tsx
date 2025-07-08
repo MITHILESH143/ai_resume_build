@@ -13,6 +13,7 @@ import { SummaryValues, summerySchema } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import GenerateSummaryButton from "./GenerateSummaryButton";
 
 const SummaryForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   const form = useForm<SummaryValues>({
@@ -50,12 +51,17 @@ const SummaryForm = ({ resumeData, setResumeData }: EditorFormProps) => {
             <FormItem>
               <FormLabel className="sr-only">Professional Summary</FormLabel>
               <FormControl>
-                <Textarea
-                  {...field}
-                  placeholder="Add a Professional Summary"
-                />
+                <Textarea {...field} placeholder="Add a Professional Summary" />
               </FormControl>
               <FormMessage />
+              <div className="w-[20%]">
+                <GenerateSummaryButton
+                  resumeData={resumeData}
+                  onSummaryGenerated={(summary) =>
+                    form.setValue("summary", summary)
+                  }
+                />
+              </div>
             </FormItem>
           )}
         />
