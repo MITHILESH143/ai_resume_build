@@ -95,3 +95,12 @@ export type ResumeValues = Omit<z.infer<typeof resumeSchema>, "photo"> & {
   id?: string;
   photo?: File | string | null;
 };
+
+export const generateSummarySchma = z.object({
+  jobTitle: optionalString,
+  ...workExperienceSchema.shape,
+  ...educationSchema.shape,
+  ...skillSchema.shape,
+});
+
+export type GenerateSummaryValues = z.infer<typeof generateSummarySchma>;
