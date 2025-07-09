@@ -1,7 +1,12 @@
 "use server";
 
 import openai from "@/lib/openai";
-import { generateSummarySchma, GenerateSummaryValues } from "@/lib/validation";
+import {
+  generateSummarySchma,
+  GenerateSummaryValues,
+  GenerateWorkExperienceInput,
+  WorkExperience,
+} from "@/lib/validation";
 
 export const generateSummary = async (input: GenerateSummaryValues) => {
   //TODO: block for non premium user
@@ -38,9 +43,6 @@ export const generateSummary = async (input: GenerateSummaryValues) => {
         ${skills}
     `;
 
-  console.log("System Message", systemMessage);
-  console.log("User Message", userMessage);
-
   const completion = await openai.chat.completions.create({
     model: "gpt-4o",
     messages: [
@@ -62,4 +64,50 @@ export const generateSummary = async (input: GenerateSummaryValues) => {
   }
 
   return aiResponse;
+};
+
+export const generateWorkExperience = async (
+  input: GenerateWorkExperienceInput,
+) => {
+  //TODO:block for non premium users.
+  const { description } = input;
+
+  const systemMessage = `You are a job resume generator ai.your task is to generate a single user work experience based on user input
+  Your response must be adhere to the following structure.You can amit fields if they cant be infered from tne provided data, but dont add any new ones
+  jobTitle: <job title>
+  company: <company name>
+  startDate: <format:yyyy-mm-dd> (only if provided)
+  endDate: <format:yyyy-mm-dd> (only if provided)
+  Description:<an optional description in bullet format, might be infered from the job title>
+  `;
+
+  const userMessage = `Please provide a work experience entry form this description ${description}`;
+
+  const completion = await openai.chat.completions.create({
+    model: "gpt-4o",
+    messages: [
+      {
+        role: "system",
+        content: systemMessage,
+      },
+      {
+        role: "user",
+        content: userMessage,
+      },
+    ],
+  });
+
+  const aiResponse = completion.choices[0].message.content;
+
+  if (!aiResponse) {
+    throw new Error("Failed to Generate AI response");
+  }
+
+  return {
+    position: aiResponse.match(/jobTitle:(.*)/)?.[1] || "",
+    company: aiResponse.match(/company:(.*)/)?.[1] || "",
+    description: aiResponse.match(/description:(.*)/)?.[1] || "",
+    startDate: aiResponse.match(/startDate:(.*)/)?.[1] || "",
+    endDate: aiResponse.match(/endDate:(.*)/)?.[1] || "",
+  } satisfies WorkExperience;
 };
