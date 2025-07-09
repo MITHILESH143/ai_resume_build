@@ -35,6 +35,7 @@ import {
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import { CSS } from "@dnd-kit/utilities";
 import { cn } from "@/lib/utils";
+import GenerateWorkExperience from "./GenerateWorkExperience";
 
 const WorkExperienceForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   const form = useForm<WorkExperienceValues>({
@@ -170,7 +171,7 @@ const WorkExperienceItem = ({
     <div
       className={cn(
         "bg-background space-y-3 rounded-md border p-3",
-        isDragging && "z-50 shadow-xl cursor-grab relative",
+        isDragging && "relative z-50 cursor-grab shadow-xl",
       )}
       ref={setNodeRef}
       style={{
@@ -186,7 +187,13 @@ const WorkExperienceItem = ({
           {...listeners}
         />
       </div>
-
+      <div className="flex justify-center">
+        <GenerateWorkExperience
+          onWorkExperienceGenerated={(exp) =>
+            form.setValue(`workExperiences.${index}`, exp)
+          }
+        />
+      </div>
       <FormField
         control={form.control}
         name={`workExperiences.${index}.position`}
