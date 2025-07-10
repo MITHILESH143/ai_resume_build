@@ -25,7 +25,6 @@ const Page = async ({ searchParams }: PageProps) => {
       })
     : null;
 
-  console.log(resumeToEdit);
 
   return <ResumeEditior resumeToEdit={resumeToEdit} />;
 };
