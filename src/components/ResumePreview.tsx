@@ -6,16 +6,22 @@ import WorkExperienceSection from "@/app/(main)/editor/preview-content/WorkExper
 import useDimension from "@/hooks/useDimension";
 import { cn } from "@/lib/utils";
 import { ResumeValues } from "@/lib/validation";
-import { useRef } from "react";
+import React, { useRef } from "react";
 
 interface ResumePreviewProp {
   resumeData: ResumeValues;
   className: string;
+  contentRef: React.Ref<HTMLDivElement>;
 }
 
-const ResumePreview = ({ resumeData, className }: ResumePreviewProp) => {
+const ResumePreview = ({
+  resumeData,
+  contentRef,
+  className,
+}: ResumePreviewProp) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const { width } = useDimension(containerRef);
+
   return (
     <div
       className={cn(
@@ -27,12 +33,18 @@ const ResumePreview = ({ resumeData, className }: ResumePreviewProp) => {
       <div
         className={cn("space-y-3 p-3", !width && "invisible")}
         style={{
-          zoom: (1 / 794) * width,
+          // Only apply zoom for screen view, not for print
+          zoom:
+            typeof window !== "undefined" && !window.matchMedia("print").matches
+              ? (1 / 794) * width
+              : 1,
         }}
+        ref={contentRef}
+        id="resumeProviewContent"
       >
         <PersonalInfoHeader resumeData={resumeData} />
         <SummarySectino resumeData={resumeData} />
-        <SkillSection resumeData={resumeData}/>
+        <SkillSection resumeData={resumeData} />
         <WorkExperienceSection resumeData={resumeData} />
         <EducationSections resumeData={resumeData} />
       </div>
