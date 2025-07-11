@@ -11,9 +11,9 @@ import {
 import { ResumeServerData } from "@/lib/types";
 import { mapToResumeData } from "@/lib/utils";
 import { formatDate } from "date-fns";
-import { MoreVertical, Trash2 } from "lucide-react";
+import { MoreVertical, Printer, Trash2 } from "lucide-react";
 import Link from "next/link";
-import { useState, useTransition } from "react";
+import { useRef, useState, useTransition } from "react";
 import { toast } from "sonner";
 import { deleteResume } from "./actions";
 import {
@@ -25,11 +25,19 @@ import {
 } from "@/components/ui/dialog";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import LoadingButton from "@/components/LoadingButton";
+import { useReactToPrint } from "react-to-print";
 
 interface ResumeItemProps {
   resume: ResumeServerData;
 }
 const ResumeItem = ({ resume }: ResumeItemProps) => {
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  const reactToPrint = useReactToPrint({
+    contentRef,
+    documentTitle: resume.title || "Resume",
+  });
+
   const wasUpdated = resume.updatedAt !== resume.createdAt;
 
   return (
@@ -55,13 +63,14 @@ const ResumeItem = ({ resume }: ResumeItemProps) => {
           className="relative inline-block w-full"
         >
           <ResumePreview
+            contentRef={contentRef}
             resumeData={mapToResumeData(resume)}
             className="overflow-hidden shadow-sm transition-shadow group-hover:shadow-lg"
           />
           <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-white to-transparent"></div>
         </Link>
       </div>
-      <MoreMenu resumeId={resume.id} />
+      <MoreMenu resumeId={resume.id} onPrintClick={reactToPrint} />
     </div>
   );
 };
@@ -70,9 +79,10 @@ export default ResumeItem;
 
 interface MoreMenuProps {
   resumeId: string;
+  onPrintClick: () => void;
 }
 
-function MoreMenu({ resumeId }: MoreMenuProps) {
+function MoreMenu({ resumeId, onPrintClick }: MoreMenuProps) {
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
   return (
@@ -94,6 +104,13 @@ function MoreMenu({ resumeId }: MoreMenuProps) {
           >
             <Trash2 className="size-4" />
             Delete
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            className="flex items-center gap-2"
+            onClick={onPrintClick}
+          >
+            <Printer className="size-4" />
+            Print
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
