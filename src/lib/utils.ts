@@ -20,7 +20,7 @@ export function fileReplacer(key: unknown, value: unknown) {
 export function mapToResumeData(data: ResumeServerData): ResumeValues {
   return {
     id: data.id || undefined,
-    title:data.title || undefined,
+    title: data.title || undefined,
     jobTitle: data.jobTitle || undefined,
     description: data.description || undefined,
     photo: data.photoUrl || undefined,
@@ -44,8 +44,16 @@ export function mapToResumeData(data: ResumeServerData): ResumeValues {
       endDate: edu.endDate?.toISOString().split("T")[0],
     })),
     skills: data.skills,
-    borderStyle:data.borderStyle,
-    colorHex:data.colorHex,
-    summary:data.summary || undefined
+    borderStyle: data.borderStyle,
+    colorHex: data.colorHex,
+    summary: data.summary || undefined,
   };
 }
+
+export const countExpiryTime = () => {
+  const currentTime = Math.floor(Date.now() / 1000);
+  const expiresAfterSeconds = 5 * 60;
+  const expiry_time = currentTime + expiresAfterSeconds;
+
+  return expiry_time;
+};
