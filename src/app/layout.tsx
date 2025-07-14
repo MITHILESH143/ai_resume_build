@@ -43,7 +43,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             {children}
-            <Toaster duration={100} closeButton />
+            <Toaster duration={3000} closeButton position="top-center" />
           </ThemeProvider>
         </body>
       </html>
