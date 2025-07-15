@@ -1,5 +1,8 @@
 import { Button } from "@/components/ui/button";
+import { canUseCustmization } from "@/lib/permissions";
 import { Circle, Square, Squircle } from "lucide-react";
+import { useSubscriptionLevel } from "../SubscriptionLevelProvider";
+import usePremiumModel from "@/hooks/usePremiumModel";
 
 interface BorderStyleProps {
   borderStyle: string | undefined;
@@ -14,7 +17,14 @@ export const BorderStyles = {
 const borderStyles = Object.values(BorderStyles);
 
 const BorderStyle = ({ borderStyle, onChange }: BorderStyleProps) => {
+  const subscriptionLevel = useSubscriptionLevel();
+
+  const { setOpen } = usePremiumModel();
   const handleClick = () => {
+    if (!canUseCustmization(subscriptionLevel)) {
+      setOpen(true);
+      return;
+    }
     const currentIndex = borderStyle ? borderStyles.indexOf(borderStyle) : 0;
     const nextIndex = (currentIndex + 1) % borderStyles?.length;
     onChange(borderStyles[nextIndex]);

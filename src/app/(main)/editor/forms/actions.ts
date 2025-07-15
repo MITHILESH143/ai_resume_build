@@ -1,15 +1,29 @@
 "use server";
 
 import openai from "@/lib/openai";
+import { canUseAiTools } from "@/lib/permissions";
+import { getUserSubscriptionLevel } from "@/lib/subscription";
 import {
   generateSummarySchma,
   GenerateSummaryValues,
   GenerateWorkExperienceInput,
   WorkExperience,
 } from "@/lib/validation";
+import { auth } from "@clerk/nextjs/server";
 
 export const generateSummary = async (input: GenerateSummaryValues) => {
-  //TODO: block for non premium user
+  const { userId } = await auth();
+
+  if (!userId) {
+    throw new Error("Unauthorized");
+  }
+
+  const subscriptionLevel = await getUserSubscriptionLevel(userId);
+
+  if (!canUseAiTools(subscriptionLevel)) {
+    throw new Error("Upgrade subscription level");
+  }
+
   const { jobTitle, workExperiences, educations, skills } =
     generateSummarySchma.parse(input);
 
@@ -69,7 +83,18 @@ export const generateSummary = async (input: GenerateSummaryValues) => {
 export const generateWorkExperience = async (
   input: GenerateWorkExperienceInput,
 ) => {
-  //TODO:block for non premium users.
+  const { userId } = await auth();
+
+  if (!userId) {
+    throw new Error("Unauthorized");
+  }
+
+  const subscriptionLevel = await getUserSubscriptionLevel(userId);
+
+  if (!canUseAiTools(subscriptionLevel)) {
+    throw new Error("Upgrade subscription level");
+  }
+
   const { description } = input;
 
   const systemMessage = `You are a job resume generator ai.your task is to generate a single user work experience based on user input

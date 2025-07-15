@@ -4,12 +4,19 @@ import { PopoverContent } from "@radix-ui/react-popover";
 import { PaletteIcon } from "lucide-react";
 import { useState } from "react";
 import { Color, ColorChangeHandler, TwitterPicker } from "react-color";
+import { useSubscriptionLevel } from "../SubscriptionLevelProvider";
+import usePremiumModel from "@/hooks/usePremiumModel";
+import { canUseCustmization } from "@/lib/permissions";
 
 interface ColorPickerProps {
   color: Color | undefined;
   onChange: ColorChangeHandler;
 }
 const ColotPicker = ({ color, onChange }: ColorPickerProps) => {
+  const subscriptionLevel = useSubscriptionLevel();
+
+  const { setOpen } = usePremiumModel();
+
   const [showPopOver, setShowPopOver] = useState(false);
 
   return (
@@ -19,13 +26,21 @@ const ColotPicker = ({ color, onChange }: ColorPickerProps) => {
           variant="outline"
           size="icon"
           title="change resume color"
-          onClick={() => setShowPopOver(true)}
+          onClick={() => {
+            if (!canUseCustmization(subscriptionLevel)) {
+              setOpen(true);
+            }
+            setShowPopOver(true);
+          }}
         >
           <PaletteIcon className="size-5" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="border-none bg-transparent shadow-none" align="end">
-        <TwitterPicker color={color} onChange={onChange} triangle="top-right"/>
+      <PopoverContent
+        className="border-none bg-transparent shadow-none"
+        align="end"
+      >
+        <TwitterPicker color={color} onChange={onChange} triangle="top-right" />
       </PopoverContent>
     </Popover>
   );

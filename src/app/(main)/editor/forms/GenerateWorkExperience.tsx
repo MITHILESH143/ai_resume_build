@@ -21,6 +21,9 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import LoadingButton from "@/components/LoadingButton";
 import { useState } from "react";
+import { useSubscriptionLevel } from "../../SubscriptionLevelProvider";
+import usePremiumModel from "@/hooks/usePremiumModel";
+import { canUseAiTools } from "@/lib/permissions";
 
 interface GenerateWorkExperienceProps {
   onWorkExperienceGenerated: (workExperience: WorkExperience) => void;
@@ -29,6 +32,9 @@ interface GenerateWorkExperienceProps {
 const GenerateWorkExperience = ({
   onWorkExperienceGenerated,
 }: GenerateWorkExperienceProps) => {
+  const subscriptionLevel = useSubscriptionLevel();
+  const { setOpen } = usePremiumModel();
+
   const [showInputDialogue, setShowInputDialogue] = useState(false);
 
   return (
@@ -36,7 +42,13 @@ const GenerateWorkExperience = ({
       <Button
         variant="outline"
         type="button"
-        onClick={() => setShowInputDialogue(true)}
+        onClick={() => {
+          if (!canUseAiTools(subscriptionLevel)) {
+            setOpen(true);
+            return;
+          }
+          setShowInputDialogue(true);
+        }}
       >
         <WandSparklesIcon className="size-4" />
         Generate(AI)
