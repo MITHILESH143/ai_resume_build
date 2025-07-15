@@ -12,6 +12,7 @@ import {
   RazorpayOptions,
   RazorpayResponse,
 } from "@/lib/types";
+import { env } from "@/env";
 
 // Extend window interface for Razorpay
 declare global {
@@ -32,11 +33,11 @@ const PremiumModel = () => {
       setLoading(true);
       const subscription = await createSubscription(planId);
 
-      if (!subscription?.id) {
+      if (!subscription.id) {
         throw new Error("Failed to create subscription");
       }
 
-      const razorpayKeyId = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
+      const razorpayKeyId = env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
       if (!razorpayKeyId) {
         throw new Error("Razorpay key not configured");
       }
@@ -104,7 +105,7 @@ const PremiumModel = () => {
               <Button
                 onClick={() =>
                   handleSubscriptionClick(
-                    process.env.NEXT_PUBLIC_PREMIUM_PRO_MONTHLY!,
+                    env.NEXT_PUBLIC_PREMIUM_MONTHLY!,
                     "Premium",
                   )
                 }
@@ -132,7 +133,7 @@ const PremiumModel = () => {
                 variant="premium"
                 onClick={() =>
                   handleSubscriptionClick(
-                    process.env.NEXT_PUBLIC_PREMIUM_PLUS_MONTHLY!,
+                    env.NEXT_PUBLIC_PREMIUM_PLUS_MONTHLY!,
                     "Premium Plus",
                   )
                 }
