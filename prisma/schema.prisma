@@ -77,7 +77,7 @@ model Education {
 model userSubscription {
   id                String   @id @default(cuid())
   userId            String   @unique
-  rzpCustomerId     String   @unique
+  rzpCustomerId     String?  @unique
   rzpSubscriptionId String   @unique
   rzpPriceId        String
   currentPeriodEnd  DateTime
