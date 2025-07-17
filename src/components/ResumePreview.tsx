@@ -6,7 +6,7 @@ import WorkExperienceSection from "@/app/(main)/editor/preview-content/WorkExper
 import useDimension from "@/hooks/useDimension";
 import { cn } from "@/lib/utils";
 import { ResumeValues } from "@/lib/validation";
-import React, { useRef } from "react";
+import React, { useRef, useEffect, useState } from "react";
 
 interface ResumePreviewProp {
   resumeData: ResumeValues;
@@ -21,6 +21,28 @@ const ResumePreview = ({
 }: ResumePreviewProp) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const { width } = useDimension(containerRef);
+  const [isPrintMode, setIsPrintMode] = useState(false);
+
+  // Detect print mode
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("print");
+    const handlePrintChange = (e: MediaQueryListEvent) => {
+      setIsPrintMode(e.matches);
+    };
+
+    setIsPrintMode(mediaQuery.matches);
+    mediaQuery.addEventListener("change", handlePrintChange);
+
+    return () => {
+      mediaQuery.removeEventListener("change", handlePrintChange);
+    };
+  }, []);
+
+  // Calculate zoom only for screen view
+  const getZoomLevel = () => {
+    if (isPrintMode || !width) return 1;
+    return (1 / 794) * width;
+  };
 
   return (
     <div
@@ -31,13 +53,13 @@ const ResumePreview = ({
       ref={containerRef}
     >
       <div
-        className={cn("space-y-3 p-3", !width && "invisible")}
+        className={cn("space-y-3 p-3", !width && !isPrintMode && "invisible")}
         style={{
-          // Only apply zoom for screen view, not for print
-          zoom:
-            typeof window !== "undefined" && !window.matchMedia("print").matches
-              ? (1 / 794) * width
-              : 1,
+          zoom: getZoomLevel(),
+          // Additional print-specific styles
+          printColorAdjust: "exact",
+          WebkitPrintColorAdjust: "exact",
+          colorAdjust: "exact",
         }}
         ref={contentRef}
         id="resumeProviewContent"

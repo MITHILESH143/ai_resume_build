@@ -13,6 +13,7 @@ import {
   RazorpayResponse,
 } from "@/lib/types";
 import { env } from "@/env";
+import logo from "../../assests/logo.png";
 
 // Extend window interface for Razorpay
 declare global {
@@ -47,6 +48,7 @@ const PremiumModel = () => {
         subscription_id: subscription.id,
         name: "ProFileBuilder",
         description: plan,
+        image: logo,
         handler: function (response: RazorpayResponse) {
           console.log("✅ Payment success", response);
           toast.success("Payment successful!");
@@ -59,7 +61,14 @@ const PremiumModel = () => {
             console.log("Payment modal dismissed");
           },
         },
-        theme: { color: "#0f172a" },
+        prefill: {
+          name: subscription.notes?.customerName?.toString() || "",
+          email: subscription.notes?.customerEmail?.toString() || "",
+          contact: subscription.notes?.contactNo?.toString() || "",
+        },
+        theme: {
+          color: "#0f172a",
+        },
       };
 
       if (typeof window !== "undefined" && window.Razorpay) {

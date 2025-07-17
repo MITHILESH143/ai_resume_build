@@ -36,6 +36,24 @@ const ResumeItem = ({ resume }: ResumeItemProps) => {
   const reactToPrint = useReactToPrint({
     contentRef,
     documentTitle: resume.title || "Resume",
+    pageStyle: `
+      @page {
+        size: A4;
+        margin: 0.5cm;
+      }
+      
+      @media print {
+        * {
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
+        }
+        
+        body {
+          font-size: 12px !important;
+          line-height: 1.4 !important;
+        }
+      }
+    `,
   });
 
   const wasUpdated = resume.updatedAt !== resume.createdAt;

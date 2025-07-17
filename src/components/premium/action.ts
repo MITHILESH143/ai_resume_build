@@ -8,9 +8,8 @@
 //step 4 : return created subscription
 
 import { env } from "@/env";
-import { prisma } from "@/lib/prisma";
 import { countExpiryTime } from "@/lib/utils";
-import { currentUser } from "@clerk/nextjs/server";
+import { clerkClient, currentUser } from "@clerk/nextjs/server";
 import Razorpay from "razorpay";
 export const createSubscription = async (planId: string) => {
   const user = await currentUser();
@@ -31,20 +30,21 @@ export const createSubscription = async (planId: string) => {
 
     let customer;
     try {
-      const existingSubscription = await prisma.userSubscription.findUnique({
-        where: { userId: user.id },
-        select: { rzpCustomerId: true },
-      });
-      if (existingSubscription?.rzpCustomerId) {
+      const { privateMetadata } = await (
+        await clerkClient()
+      ).users.getUser(user.id);
+
+      if (privateMetadata.razorpayCustomerId) {
         try {
           customer = await razorpay.customers.fetch(
-            existingSubscription.rzpCustomerId,
+            privateMetadata.razorpayCustomerId as string,
           );
         } catch (error) {
           console.warn(error);
           customer = null;
         }
       }
+
       if (!customer) {
         customer = await razorpay.customers.create({
           name:
@@ -56,6 +56,12 @@ export const createSubscription = async (planId: string) => {
           notes: {
             clerk_user_id: user.id,
             created_from: "ProFileBuilder",
+          },
+        });
+
+        (await clerkClient()).users.updateUserMetadata(user.id, {
+          privateMetadata: {
+            razorpayCustomerId: customer.id,
           },
         });
       }
@@ -71,11 +77,11 @@ export const createSubscription = async (planId: string) => {
       customer_notify: true,
       notes: {
         clerk_user_id: user.id,
-        user_email: user.emailAddresses[0]?.emailAddress,
+        customerName: customer?.name || "",
+        customerEmail: customer?.email || "",
+        contactNo: customer?.contact || "",
       },
     });
-
-    subscription.customer_id = customer?.id || null;
 
     return subscription;
   } catch (error) {
