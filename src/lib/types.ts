@@ -1,3 +1,4 @@
+import { StaticImageData } from "next/image";
 import { ResumeValues } from "./validation";
 import { Prisma } from "/app/generated/prisma-client";
 
@@ -28,11 +29,18 @@ export interface RazorpayResponse {
 export interface RazorpayOptions {
   key: string;
   subscription_id: string;
+  customer_id?: string;
+  image: StaticImageData;
   name: string;
   description: string;
   handler: (response: RazorpayResponse) => void;
   modal: {
     ondismiss: () => void;
+  };
+  prefill: {
+    name: string;
+    email: string;
+    contact: string;
   };
   theme: {
     color: string;

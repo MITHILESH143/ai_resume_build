@@ -121,82 +121,15 @@
   }
 }
 
-@media print {
-  #resumeProviewContent {
-    zoom: 1 !important;
-    transform: scale(1) !important;
-    padding: 0.5cm !important;
-    font-size: 12px !important;
-    line-height: 1.4 !important;
-    width: 100% !important;
-    height: auto !important;
-    overflow: visible !important;
-    box-shadow: none !important;
-  }
+/* SIMPLE PRINT CSS - Replace your current print styles with this */
 
-  /* Ensure the container takes full print area */
-  .aspect-\[210\/297\] {
-    aspect-ratio: auto !important;
-    height: auto !important;
-    width: 100% !important;
-  }
-
-  /* Remove any gradients or overlays for print */
-  .bg-gradient-to-t {
-    display: none !important;
-  }
-
-  /* Preserve badge styles for skills */
-  .badge,
-  [class*="inline-flex"][class*="items-center"][class*="rounded-full"] {
-    display: inline-flex !important;
-    align-items: center !important;
-    border-radius: 9999px !important;
-    padding: 0.25rem 0.75rem !important;
-    font-size: 0.75rem !important;
-    font-weight: 500 !important;
-    background-color: #f3f4f6 !important;
-    color: #374151 !important;
-    border: 1px solid #d1d5db !important;
-    margin-right: 0.5rem !important;
-    margin-bottom: 0.25rem !important;
-  }
-
-  /* Ensure skills container maintains flex layout */
-  .flex.flex-wrap.gap-2 {
-    display: flex !important;
-    flex-wrap: wrap !important;
-    gap: 0.5rem !important;
-  }
-
-  /* Ensure text is black for print but preserve badge backgrounds */
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  p,
-  span:not(.badge):not([class*="inline-flex"]) {
-    color: black !important;
-  }
-
-  /* Hide any UI elements that shouldn't be printed */
-  .group-hover\:opacity-100,
-  .opacity-0 {
-    display: none !important;
-  }
-
-  /* Ensure proper spacing for sections */
-  .space-y-3 > * + * {
-    margin-top: 0.75rem !important;
-  }
-
-  .space-y-4 > * + * {
-    margin-top: 1rem !important;
-  }
+/* Global print color adjustment */
+* {
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
 }
 
+/* Screen styles for resume content */
 #resumeProviewContent {
   font-family:
     Inter,
@@ -209,7 +142,66 @@
   line-height: 1.5;
 }
 
-@page {
-  size: A4;
-  margin: 0.6cm;
+/* Print styles - keep it simple */
+@media print {
+  @page {
+    size: A4;
+    margin: 0.5cm;
+  }
+
+  /* Force colors and images to print */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Reset problematic styles for print */
+  #resumeProviewContent {
+    zoom: 1 !important;
+    transform: none !important;
+    font-size: 12px !important;
+    line-height: 1.4 !important;
+    width: 100% !important;
+    height: auto !important;
+    padding: 0.2cm !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    box-shadow: none !important;
+  }
+
+  /* Remove aspect ratio for print */
+  .aspect-\[210\/297\] {
+    aspect-ratio: auto !important;
+    height: auto !important;
+    width: 100% !important;
+  }
+
+  /* Hide screen-only elements */
+  .bg-gradient-to-t,
+  .group-hover\:opacity-100,
+  .opacity-0 {
+    display: none !important;
+  }
+
+  /* Ensure proper spacing */
+  .space-y-3 > * + * {
+    margin-top: 0.75rem !important;
+  }
+
+  .space-y-4 > * + * {
+    margin-top: 1rem !important;
+  }
+
+  /* Preserve skill badges */
+  .inline-flex {
+    display: inline-flex !important;
+  }
+
+  .flex-wrap {
+    flex-wrap: wrap !important;
+  }
+
+  .gap-2 {
+    gap: 0.5rem !important;
+  }
 }
