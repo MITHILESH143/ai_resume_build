@@ -1,6 +1,6 @@
 import Image from "next/image";
 import logo from "@/assests/logo.png";
-import resumePreviewImage from "@/assests/resume-preview.jpg";
+import resumePreviewImage from "@/assests/resume-preview.png";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
