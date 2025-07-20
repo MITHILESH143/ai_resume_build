@@ -85,9 +85,7 @@ async function handleSubscriptionActivateOrCharged(
   }
 }
 
-export async function handleSubscriptionCancelled(
-  payload: RazorpayWebHookPayload,
-) {
+async function handleSubscriptionCancelled(payload: RazorpayWebHookPayload) {
   const subscription = payload.subscription.entity;
   const clerkUserId = subscription.notes.clerk_user_id;
 
