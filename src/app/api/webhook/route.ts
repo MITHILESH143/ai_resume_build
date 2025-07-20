@@ -66,6 +66,7 @@ async function handleSubscriptionActivateOrCharged(
         rzpCustomerId: subscription.customer_id,
         rzpPriceId: subscription.plan_id,
         currentPeriodEnd: new Date((subscription?.current_end || 0) * 1000),
+        cancelAtPeriodEnd: false,
       },
       create: {
         userId: clerkUserId,
@@ -73,6 +74,7 @@ async function handleSubscriptionActivateOrCharged(
         rzpCustomerId: subscription.customer_id,
         rzpPriceId: subscription.plan_id,
         currentPeriodEnd: new Date(subscription?.current_end || 0 * 1000),
+        cancelAtPeriodEnd: false,
       },
     });
 
@@ -103,7 +105,7 @@ export async function handleSubscriptionCancelled(
       },
     });
 
-    console.log(`Subscription charged for user ${clerkUserId}`);
+    console.log(`Subscription cancel for user ${clerkUserId}`);
   } catch (error) {
     console.error("Error handling subscription charge:", error);
     throw error;
