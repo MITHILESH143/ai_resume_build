@@ -5,8 +5,8 @@ import { PaletteIcon } from "lucide-react";
 import { useState } from "react";
 import { Color, ColorChangeHandler, TwitterPicker } from "react-color";
 import { useSubscriptionLevel } from "../SubscriptionLevelProvider";
-import usePremiumModel from "@/hooks/usePremiumModel";
 import { canUseCustmization } from "@/lib/permissions";
+import usePremiumPlusModel from "@/hooks/usePremiumPlusModel";
 
 interface ColorPickerProps {
   color: Color | undefined;
@@ -15,7 +15,7 @@ interface ColorPickerProps {
 const ColotPicker = ({ color, onChange }: ColorPickerProps) => {
   const subscriptionLevel = useSubscriptionLevel();
 
-  const { setOpen } = usePremiumModel();
+  const { setPremiumPlusOpen } = usePremiumPlusModel();
 
   const [showPopOver, setShowPopOver] = useState(false);
 
@@ -28,7 +28,7 @@ const ColotPicker = ({ color, onChange }: ColorPickerProps) => {
           title="change resume color"
           onClick={() => {
             if (!canUseCustmization(subscriptionLevel)) {
-              setOpen(true);
+              setPremiumPlusOpen(true);
             }
             setShowPopOver(true);
           }}

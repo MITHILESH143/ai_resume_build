@@ -49,7 +49,7 @@ const ResumeEditior = ({ resumeToEdit }: ResumeEditorProps) => {
           <div
             className={cn(
               "flex h-full w-full flex-col md:w-1/2",
-              showPreview && "hidden",
+              showPreview && "hidden md:flex",
             )}
           >
             <div className="bg-background z-10 flex-shrink-0">

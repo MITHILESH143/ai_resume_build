@@ -1,6 +1,7 @@
 "use server";
 
-import openai from "@/lib/openai";
+//code using open ai api
+/* import openai from "@/lib/openai";
 import { canUseAiTools } from "@/lib/permissions";
 import { getUserSubscriptionLevel } from "@/lib/subscription";
 import {
@@ -32,7 +33,7 @@ export const generateSummary = async (input: GenerateSummaryValues) => {
 
   const userMessage = `Please generate a professional resume summary for this user data:
     Job Title:${jobTitle || "N/A"}
-    
+
     Work Experience: ${workExperiences
       ?.map(
         (exp) => `
@@ -53,7 +54,7 @@ export const generateSummary = async (input: GenerateSummaryValues) => {
         )
         .join("\n\n")}
 
-        Skills: 
+        Skills:
         ${skills}
     `;
 
@@ -134,5 +135,109 @@ export const generateWorkExperience = async (
     description: aiResponse.match(/description:(.*)/)?.[1] || "",
     startDate: aiResponse.match(/startDate:(.*)/)?.[1] || "",
     endDate: aiResponse.match(/endDate:(.*)/)?.[1] || "",
+  } satisfies WorkExperience;
+}; */
+
+//Code using google gemini api
+"use server";
+
+import { geminiModel } from "@/lib/gemini";
+import { canUseAiTools } from "@/lib/permissions";
+import { getUserSubscriptionLevel } from "@/lib/subscription";
+import {
+  generateSummarySchma,
+  GenerateSummaryValues,
+  GenerateWorkExperienceInput,
+  WorkExperience,
+} from "@/lib/validation";
+import { auth } from "@clerk/nextjs/server";
+
+export const generateSummary = async (input: GenerateSummaryValues) => {
+  const { userId } = await auth();
+  if (!userId) throw new Error("Unauthorized");
+
+  const subscriptionLevel = await getUserSubscriptionLevel(userId);
+  if (!canUseAiTools(subscriptionLevel))
+    throw new Error("Upgrade subscription level");
+
+  const { jobTitle, workExperiences, educations, skills } =
+    generateSummarySchma.parse(input);
+
+  const systemMessage = `You're a Job Resume Generator AI. Write a professional and concise resume summary from the following input. Return only the summary — no extra info or formatting.`;
+
+  const userMessage = `Job Title: ${jobTitle || "N/A"}
+
+Work Experience:
+${workExperiences
+  ?.map(
+    (exp) =>
+      `• ${exp.position || "N/A"} at ${exp.company || "N/A"} (${exp.startDate || "N/A"} – ${exp.endDate || "Present"})\n  ${exp.description || "N/A"}`,
+  )
+  .join("\n\n")}
+
+Education:
+${educations
+  ?.map(
+    (edu) =>
+      `• ${edu.degree || "N/A"} at ${edu.school || "N/A"} (${edu.startDate || "N/A"} – ${edu.endDate || "N/A"})`,
+  )
+  .join("\n\n")}
+
+Skills:
+${skills || "N/A"}`;
+
+  const result = await geminiModel.generateContent([
+    systemMessage,
+    userMessage,
+  ]);
+  const response = await result.response;
+  const aiResponse = response.text();
+
+  if (!aiResponse) {
+    throw new Error("Failed to generate AI response");
+  }
+
+  return aiResponse;
+};
+
+export const generateWorkExperience = async (
+  input: GenerateWorkExperienceInput,
+) => {
+  const { userId } = await auth();
+  if (!userId) throw new Error("Unauthorized");
+
+  const subscriptionLevel = await getUserSubscriptionLevel(userId);
+  if (!canUseAiTools(subscriptionLevel))
+    throw new Error("Upgrade subscription level");
+
+  const { description } = input;
+
+  const systemMessage = `You're a Resume Assistant AI. Based on the user-provided description, extract resume work experience using this format:
+
+jobTitle: <job title>
+company: <company name>
+startDate: <yyyy-mm-dd>
+endDate: <yyyy-mm-dd>
+description: <bullet list of responsibilities or achievements>
+
+Don't fabricate anything. Use only what's inferable.`;
+
+  const userMessage = `Description: ${description}`;
+
+  const result = await geminiModel.generateContent([
+    systemMessage,
+    userMessage,
+  ]);
+  const response = await result.response;
+  const aiResponse = response.text();
+
+  if (!aiResponse) throw new Error("Failed to generate AI response");
+
+  return {
+    position: aiResponse.match(/jobTitle:(.*)/)?.[1]?.trim() || "",
+    company: aiResponse.match(/company:(.*)/)?.[1]?.trim() || "",
+    description: aiResponse.match(/description:(.*)/s)?.[1]?.trim() || "",
+    startDate: aiResponse.match(/startDate:(.*)/)?.[1]?.trim() || "",
+    endDate: aiResponse.match(/endDate:(.*)/)?.[1]?.trim() || "",
   } satisfies WorkExperience;
 };
