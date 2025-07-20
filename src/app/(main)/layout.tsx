@@ -1,9 +1,10 @@
 import React from "react";
 import Navbar from "./Navbar";
-import PremiumModel from "@/components/premium/PremiumModel";
+import PremiumModel from "@/components/subscription/PremiumModel";
 import { auth } from "@clerk/nextjs/server";
 import { getUserSubscriptionLevel } from "@/lib/subscription";
 import SubscriptionLevelProvider from "./SubscriptionLevelProvider";
+import PremiumPlusUpgradeModal from "@/components/subscription/PremiumPlusModel";
 
 const layout = async ({ children }: { children: React.ReactNode }) => {
   const { userId } = await auth();
@@ -19,6 +20,7 @@ const layout = async ({ children }: { children: React.ReactNode }) => {
         <Navbar />
         {children}
         <PremiumModel />
+        <PremiumPlusUpgradeModal />
       </div>
     </SubscriptionLevelProvider>
   );
