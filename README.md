@@ -7,7 +7,6 @@
 ## 🧠 Features
 
 - ✍️ AI-powered resume content generation (objective, experience, skills, etc.)
-- 📄 Multiple professional resume templates
 - 🎯 Resume customization and preview in real-time
 - 🔍 ATS-friendly formatting
 - 💾 Export resumes as PDF
@@ -19,7 +18,7 @@
 
 - **Frontend:** Next.js, Tailwind CSS
 - **Database:** PostgreSQL
-- **Authentication:** NextAuth
+- **Authentication:** Clerk
 - **AI Integration:** OpenAI API (ChatGPT or Claude)
 - **PDF Generation:** react-to-pdf / html2pdf.js
 
