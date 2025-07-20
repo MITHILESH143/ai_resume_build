@@ -94,6 +94,7 @@ export const getSubscription = async (userId: string) => {
       planInfo = await razorpay.plans.fetch(subscription?.rzpPriceId);
     }
 
+    console.log(planInfo);
     return {
       planInfo,
       subscription,
