@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 import { RazorpayWebHookPayload } from "@/lib/types";
 import { prisma } from "@/lib/prisma";
+import { sseManager } from "@/lib/sse-manager";
 
 export async function POST(req: NextRequest) {
   try {
@@ -25,19 +26,26 @@ export async function POST(req: NextRequest) {
 
     console.log(`Incoming data : ${JSON.stringify(event.payload)}`);
 
+    let userId: string | null = null;
     switch (event.event) {
       case "subscription.activated":
-        await handleSubscriptionActivateOrCharged(event.payload);
+        userId = await handleSubscriptionActivateOrCharged(event.payload);
         break;
       case "subscription.charged":
-        await handleSubscriptionActivateOrCharged(event.payload);
+        userId = await handleSubscriptionActivateOrCharged(event.payload);
         break;
       case "subscription.cancelled":
-        await handleSubscriptionCancelled(event.payload);
+        userId = await handleSubscriptionCancelled(event.payload);
         break;
       default:
-        console.log(event.event);
         break;
+    }
+
+    if (userId) {
+      sseManager.notifyUser(userId, {
+        type: "subscription_updated",
+        message: "Subscription details updated successfully",
+      });
     }
 
     return NextResponse.json("completed", { status: 200 });
@@ -79,6 +87,7 @@ async function handleSubscriptionActivateOrCharged(
     });
 
     console.log(`Subscription activated for user ${clerkUserId}`);
+    return clerkUserId;
   } catch (error) {
     console.error("Error handling subscription activation:", error);
     throw error;
@@ -104,6 +113,7 @@ async function handleSubscriptionCancelled(payload: RazorpayWebHookPayload) {
     });
 
     console.log(`Subscription cancel for user ${clerkUserId}`);
+    return clerkUserId;
   } catch (error) {
     console.error("Error handling subscription charge:", error);
     throw error;
