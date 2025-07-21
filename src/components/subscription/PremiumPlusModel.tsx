@@ -4,7 +4,7 @@ import { Check, Star, Sparkles, Crown, ArrowRight, Zap } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import { Button } from "../ui/button";
 import usePremiumPlusModel from "@/hooks/usePremiumPlusModel";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createSubscription } from "./action";
 import { toast } from "sonner";
 import {
@@ -14,6 +14,7 @@ import {
 } from "@/lib/types";
 import { env } from "@/env";
 import logo from "../../assests/logo.png";
+import { useUser } from "@clerk/nextjs";
 
 // Extend window interface for Razorpay
 declare global {
@@ -27,7 +28,35 @@ const upgradeFeatures = ["Infinite resume", "Design Customization"];
 
 const PremiumPlusUpgradeModal = () => {
   const { open, setPremiumPlusOpen } = usePremiumPlusModel();
+  const { user } = useUser();
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!user?.id) return;
+
+    const eventSource = new EventSource(
+      `/api/subscription-status?userId=${user.id}`,
+    );
+
+    eventSource.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      if (data.type === "subscription_updated") {
+        toast.success(data.message);
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      }
+    };
+
+    eventSource.onerror = (error) => {
+      console.error("SSE connection error", error);
+    };
+
+    return () => {
+      eventSource.close();
+    };
+  }, [user?.id]);
 
   const handleUpgradeClick = async () => {
     try {
@@ -57,18 +86,6 @@ const PremiumPlusUpgradeModal = () => {
               description: "Processing your upgrade... Please wait.",
               duration: 3000,
             });
-
-            setTimeout(() => {
-              toast.success("Account Upgraded!", {
-                description:
-                  "Your Premium Plus subscription is now active. Refreshing page...",
-                duration: 2000,
-              });
-
-              setTimeout(() => {
-                window.location.reload();
-              }, 2000);
-            }, 6000);
           }
         },
         modal: {

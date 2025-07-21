@@ -5,7 +5,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 import usePremiumModel from "@/hooks/usePremiumModel";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createSubscription } from "./action";
 import { toast } from "sonner";
 import {
@@ -15,6 +15,7 @@ import {
 } from "@/lib/types";
 import { env } from "@/env";
 import logo from "../../assests/logo.png";
+import { useUser } from "@clerk/nextjs";
 
 // Extend window interface for Razorpay
 declare global {
@@ -35,7 +36,35 @@ const premiumPlusFeatures = [
 
 const PremiumModal = () => {
   const { open, setOpen } = usePremiumModel();
+  const { user } = useUser();
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!user?.id) return;
+
+    const eventSource = new EventSource(
+      `/api/subscription-status?userId=${user.id}`,
+    );
+
+    eventSource.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      if (data.type === "subscription_updated") {
+        toast.success(data.message);
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      }
+    };
+
+    eventSource.onerror = (error) => {
+      console.error("SSE connection error", error);
+    };
+
+    return () => {
+      eventSource.close();
+    };
+  }, [user?.id]);
 
   const handleSubscriptionClick = async (planId: string, plan: string) => {
     try {
@@ -63,18 +92,6 @@ const PremiumModal = () => {
               description: "Processing your subscription... Please wait.",
               duration: 3000,
             });
-
-            setTimeout(() => {
-              toast.success("Account Updated!", {
-                description:
-                  "Your subscription is now active. Refreshing page...",
-                duration: 2000,
-              });
-
-              setTimeout(() => {
-                window.location.reload();
-              }, 2000);
-            }, 6000);
           }
         },
         modal: {
