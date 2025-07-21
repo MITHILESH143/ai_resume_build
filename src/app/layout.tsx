@@ -14,11 +14,27 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://profilebuilder-two.vercel.app"),
   title: {
     template: "%s - ProFileBuilder",
     absolute: "ProFileBuilder",
   },
   description: "Generate smart resumes with AI assistance",
+  openGraph: {
+    title: "ProFileBuilder – AI Resume Builder",
+    description: "Generate smart resumes with AI assistance",
+    url: "https://profilebuilder-two.vercel.app",
+    siteName: "ProFileBuilder",
+    images: [
+      {
+        url: "/opengraph-image.png",
+        width: 1200,
+        height: 630,
+        alt: "ProFileBuilder preview",
+      },
+    ],
+    type: "website",
+  },
 };
 
 export default function RootLayout({

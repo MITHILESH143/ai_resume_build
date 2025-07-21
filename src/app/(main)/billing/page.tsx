@@ -87,7 +87,11 @@ const Page = async () => {
               </CardHeader>
               <CardContent>
                 <div className="flex flex-col gap-4 sm:flex-row">
-                  {subscription && <CancelSubscription />}
+                  {subscription && (
+                    <div className="flex-1">
+                      <CancelSubscription />
+                    </div>
+                  )}
                   {subscription ? (
                     <>
                       <div className="flex-1">
