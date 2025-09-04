@@ -5,7 +5,6 @@ import Link from "next/link";
 import React from "react";
 import logo from "@/assests/logo.png";
 import { UserButton } from "@clerk/nextjs";
-import { CreditCard } from "lucide-react";
 import ThemeToggle from "@/components/ThemeToggle";
 import { useTheme } from "next-themes";
 import { dark } from "@clerk/themes";
