@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { generateSummary } from "./actions";
 import { useState } from "react";
 import { useSubscriptionLevel } from "../../SubscriptionLevelProvider";
-import usePremiumModel from "@/hooks/usePremiumModel";
+import useOpenCloseState from "@/hooks/useOpenCloseState";
 import { canUseAiTools } from "@/lib/permissions";
 
 interface GenerateSummaryButtonProps {
@@ -18,12 +18,12 @@ const GenerateSummaryButton = ({
   onSummaryGenerated,
 }: GenerateSummaryButtonProps) => {
   const SubscriptionLevel = useSubscriptionLevel();
-  const { setOpen } = usePremiumModel();
+  const { setOpenCloseState } = useOpenCloseState();
   const [loading, setLoading] = useState(false);
 
   const handleClick = async () => {
     if (!canUseAiTools(SubscriptionLevel)) {
-      setOpen(true);
+      setOpenCloseState(true);
       return;
     }
     try {

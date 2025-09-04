@@ -1,5 +1,5 @@
 import { ResumeSectionProps } from "@/lib/types";
-import { formatDate } from "date-fns";
+import { format } from "date-fns";
 
 const WorkExperienceSection = ({ resumeData }: ResumeSectionProps) => {
   const { workExperiences ,colorHex} = resumeData;
@@ -26,8 +26,8 @@ const WorkExperienceSection = ({ resumeData }: ResumeSectionProps) => {
               </div>
               {exp.startDate && (
                 <span className="text-xs text-gray-500" style={{ color: colorHex }}>
-                  {formatDate(exp.startDate, "MM/yyyy")} -{" "}
-                  {exp?.endDate ? formatDate(exp.endDate, "MM/yyyy") : "Present"}
+                  {format(exp.startDate,  "MM/yyyy")} -{" "}
+                  {exp?.endDate ? format(exp.endDate, "MM/yyyy") : "Present"}
                 </span>
               )}
             </div>

@@ -41,13 +41,7 @@ const Navbar = () => {
               },
             }}
           >
-            <UserButton.MenuItems>
-              <UserButton.Link
-                href="/billing"
-                label="Billing"
-                labelIcon={<CreditCard className="size-4" />}
-              />
-            </UserButton.MenuItems>
+            
           </UserButton>
         </div>
       </div>

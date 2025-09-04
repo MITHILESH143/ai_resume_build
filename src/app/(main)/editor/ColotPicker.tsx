@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Color, ColorChangeHandler, TwitterPicker } from "react-color";
 import { useSubscriptionLevel } from "../SubscriptionLevelProvider";
 import { canUseCustmization } from "@/lib/permissions";
-import usePremiumPlusModel from "@/hooks/usePremiumPlusModel";
+import useOpenCloseState from "@/hooks/useOpenCloseState";
 
 interface ColorPickerProps {
   color: Color | undefined;
@@ -15,7 +15,7 @@ interface ColorPickerProps {
 const ColotPicker = ({ color, onChange }: ColorPickerProps) => {
   const subscriptionLevel = useSubscriptionLevel();
 
-  const { setPremiumPlusOpen } = usePremiumPlusModel();
+  const { setOpenCloseState } = useOpenCloseState();
 
   const [showPopOver, setShowPopOver] = useState(false);
 
@@ -28,7 +28,7 @@ const ColotPicker = ({ color, onChange }: ColorPickerProps) => {
           title="change resume color"
           onClick={() => {
             if (!canUseCustmization(subscriptionLevel)) {
-              setPremiumPlusOpen(true);
+              setOpenCloseState(true);
             }
             setShowPopOver(true);
           }}

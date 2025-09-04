@@ -4,7 +4,6 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/sonner";
-import Script from "next/script";
 
 // Load Inter font with CSS variable
 const inter = Inter({
@@ -46,10 +45,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en" className={inter.variable} suppressHydrationWarning>
         <head>
-          <Script
-            src="https://checkout.razorpay.com/v1/checkout.js"
-            strategy="lazyOnload"
-          />
+          
         </head>
         <body className="antialiased">
           <ThemeProvider

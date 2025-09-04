@@ -22,7 +22,7 @@ import { Textarea } from "@/components/ui/textarea";
 import LoadingButton from "@/components/LoadingButton";
 import { useState } from "react";
 import { useSubscriptionLevel } from "../../SubscriptionLevelProvider";
-import usePremiumModel from "@/hooks/usePremiumModel";
+import useOpenCloseState from "@/hooks/useOpenCloseState";
 import { canUseAiTools } from "@/lib/permissions";
 
 interface GenerateWorkExperienceProps {
@@ -33,7 +33,7 @@ const GenerateWorkExperience = ({
   onWorkExperienceGenerated,
 }: GenerateWorkExperienceProps) => {
   const subscriptionLevel = useSubscriptionLevel();
-  const { setOpen } = usePremiumModel();
+  const { setOpenCloseState } = useOpenCloseState();
 
   const [showInputDialogue, setShowInputDialogue] = useState(false);
 
@@ -44,7 +44,7 @@ const GenerateWorkExperience = ({
         type="button"
         onClick={() => {
           if (!canUseAiTools(subscriptionLevel)) {
-            setOpen(true);
+            setOpenCloseState(true);
             return;
           }
           setShowInputDialogue(true);
